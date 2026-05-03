@@ -251,6 +251,35 @@ Generate PowerPoint presentations programmatically using PptxGenJS.
 
 **Covers:** Text, shapes, images, icons (with react-icons), tables, charts, slide backgrounds, masters, layouts
 
+### `tools/revealjs/`
+Create polished, professional HTML presentations using reveal.js. No build step required - just open in a browser.
+
+**Use for:** Creating slides, presentations, decks, or slideshows with web technologies
+
+**Key features:**
+- Content-informed design approach (palettes match the subject matter)
+- Multi-column layouts, code highlighting, animations, speaker notes
+- Chart.js integration for data visualization
+- Built-in visual overflow checking and screenshot-based review
+- Browser-based text editor for quick copy tweaks
+- Generates HTML + CSS with no build step - works immediately
+
+**Workflow:**
+1. Plan structure (horizontal slides, vertical stacks, section dividers)
+2. Generate scaffold with `create-presentation.js` script
+3. Customize CSS (colors, fonts, theme)
+4. Fill in HTML content incrementally (use Edit tool, not Write)
+5. Check for overflow with `check-overflow.js`
+6. Visual review with screenshots (decktape)
+7. Offer browser editing for copy refinement
+
+**Design principles:**
+- Choose colors that match the content (avoid defaults)
+- Use `pt` for all font sizes (predictable like PowerPoint)
+- Vary layouts across slides (avoid repetition)
+- Scale up text when slides have less content
+- Text must be in proper HTML elements (`<p>`, `<li>`, `<h1>`-`<h6>`)
+
 ---
 
 ## Skill Organization
@@ -279,7 +308,8 @@ skills/
 └── tools/             # Technical integrations
     ├── htmx/
     ├── stripe/
-    └── pptx-gen/
+    ├── pptx-gen/
+    └── revealjs/
 ```
 
 Each skill contains:
@@ -360,6 +390,7 @@ Or:
 1. `htmx` - Think HTML-over-the-wire, not JSON APIs
 2. `stripe` - Always verify webhook signatures, handle async events
 3. `pptx-gen` - Avoid common pitfalls (no "#" in colors, fresh objects for shadows)
+4. `revealjs` - Choose colors based on content, review all slides visually, use Edit tool incrementally
 
 ---
 
@@ -390,7 +421,8 @@ Or:
 **Technical integration:**
 - Hypermedia apps → `htmx`
 - Payments → `stripe`
-- Presentations → `pptx-gen`
+- PowerPoint presentations → `pptx-gen`
+- HTML presentations → `revealjs`
 
 ---
 
