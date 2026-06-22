@@ -1,6 +1,7 @@
-______________________________________________________________________
-
-## name: pptxgenjs description: 'Guidance for creating PowerPoint presentations with PptxGenJS, including layouts, text, shapes, images, icons, tables, charts, slide masters, and common pitfalls. Use when generating or editing .pptx files with PptxGenJS or troubleshooting PowerPoint output issues.'
+---
+name: pptxgenjs
+description: 'Guidance for creating PowerPoint presentations with PptxGenJS, including layouts, text, shapes, images, icons, tables, charts, slide masters, and common pitfalls. Use when generating or editing .pptx files with PptxGenJS or troubleshooting PowerPoint output issues.'
+---
 
 # PptxGenJS Tutorial
 
@@ -34,7 +35,7 @@ Slide dimensions (coordinates in inches):
 - `LAYOUT_4x3`: 10" × 7.5"
 - `LAYOUT_WIDE`: 13.3" × 7.5"
 
-______________________________________________________________________
+---
 
 ## Text & Formatting
 
@@ -87,7 +88,7 @@ slide.addText("Title", {
 
 **Tip:** Text boxes have internal margin by default. Set `margin: 0` when you need text to align precisely with shapes, lines, or icons at the same x-position.
 
-______________________________________________________________________
+---
 
 ## Lists & Bullets
 
@@ -107,7 +108,7 @@ slide.addText("• First item", { ... });  // Creates double bullets
 { text: "First", options: { bullet: { type: "number" }, breakLine: true } }
 ```
 
-______________________________________________________________________
+---
 
 ## Shapes
 
@@ -177,20 +178,20 @@ slide.addShape(pres.shapes.RECTANGLE, {
 
 Shadow options:
 
-| Property | Type | Range | Notes |
+| Property  | Type   | Range                        | Notes                                                         |
 | --------- | ------ | ---------------------------- | ------------------------------------------------------------- |
-| `type` | string | `"outer"`, `"inner"` | |
-| `color` | string | 6-char hex (e.g. `"000000"`) | No `#` prefix, no 8-char hex — see Common Pitfalls |
-| `blur` | number | 0-100 pt | |
-| `offset` | number | 0-200 pt | **Must be non-negative** — negative values corrupt the file |
-| `angle` | number | 0-359 degrees | Direction the shadow falls (135 = bottom-right, 270 = upward) |
-| `opacity` | number | 0.0-1.0 | Use this for transparency, never encode in color string |
+| `type`    | string | `"outer"`, `"inner"`         |                                                               |
+| `color`   | string | 6-char hex (e.g. `"000000"`) | No `#` prefix, no 8-char hex — see Common Pitfalls            |
+| `blur`    | number | 0-100 pt                     |                                                               |
+| `offset`  | number | 0-200 pt                     | **Must be non-negative** — negative values corrupt the file   |
+| `angle`   | number | 0-359 degrees                | Direction the shadow falls (135 = bottom-right, 270 = upward) |
+| `opacity` | number | 0.0-1.0                      | Use this for transparency, never encode in color string       |
 
 To cast a shadow upward (e.g. on a footer bar), use `angle: 270` with a positive offset — do **not** use a negative offset.
 
 **Note**: Gradient fills are not natively supported. Use a gradient image as a background instead.
 
-______________________________________________________________________
+---
 
 ## Images
 
@@ -274,7 +275,7 @@ slide.addImage({
 - **Standard**: PNG, JPG, GIF (animated GIFs work in Microsoft 365)
 - **SVG**: Works in modern PowerPoint/Microsoft 365
 
-______________________________________________________________________
+---
 
 ## Icons
 
@@ -328,7 +329,7 @@ Popular icon sets in react-icons:
 - `react-icons/hi` - Heroicons
 - `react-icons/bi` - Bootstrap Icons
 
-______________________________________________________________________
+---
 
 ## Slide Backgrounds
 
@@ -346,7 +347,7 @@ slide.background = { path: "https://example.com/bg.jpg" };
 slide.background = { data: "image/png;base64,iVBORw0KGgo..." };
 ```
 
-______________________________________________________________________
+---
 
 ## Tables
 
@@ -380,7 +381,7 @@ let tableData = [
 slide.addTable(tableData, { x: 1, y: 3.5, w: 8, colW: [4, 4] });
 ```
 
-______________________________________________________________________
+---
 
 ## Charts
 
@@ -477,7 +478,7 @@ slide.addChart(pres.charts.BAR, chartData, {
 - `lineSmooth: true` - curved lines (line charts)
 - `legendPos: "r"` - legend position: "b", "t", "l", "r", "tr"
 
-______________________________________________________________________
+---
 
 ## Slide Masters
 
@@ -498,7 +499,7 @@ let titleSlide = pres.addSlide({ masterName: "TITLE_SLIDE" });
 titleSlide.addText("My Title", { placeholder: "title" });
 ```
 
-______________________________________________________________________
+---
 
 ## Common Pitfalls
 
@@ -574,7 +575,7 @@ ______________________________________________________________________
    });
    ```
 
-______________________________________________________________________
+---
 
 ## Quick Reference
 
