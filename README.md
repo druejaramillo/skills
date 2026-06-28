@@ -280,6 +280,20 @@ Create polished, professional HTML presentations using reveal.js. No build step 
 - Scale up text when slides have less content
 - Text must be in proper HTML elements (`<p>`, `<li>`, `<h1>`-`<h6>`)
 
+### `tools/caldir/`
+Manage calendars as plaintext `.ics` files with the `caldir` CLI. Supports reading schedules, creating events, editing or deleting existing entries, and syncing with providers.
+
+**Use for:** Checking calendar availability, adding meetings, updating or cancelling events, syncing local calendars with remote providers
+
+**Covers:** Calendar directories, event filename conventions, recurring events with `RRULE` and `EXDATE`, invite RSVP flow, and sync commands like `caldir status`, `pull`, `push`, and `sync`
+
+### `tools/skill-creator/`
+Create or improve agent skills that follow the Agent Skills specification. Helps scope the skill correctly, write stronger trigger descriptions, structure the skill directory, and decide when to add references, assets, or scripts.
+
+**Use for:** Creating new skills, improving existing `SKILL.md` files, turning repeated workflows into reusable agent skills
+
+**Focus areas:** Tight scope, spec-compliant frontmatter, high-signal descriptions, actionable execution steps, and lightweight validation/evals when useful
+
 ---
 
 ## Project (`project/`)
@@ -302,6 +316,13 @@ Test-driven development using the red-green-refactor loop. Emphasizes vertical s
 - Never refactor while RED
 
 **References:** `tests.md`, `mocking.md`, `interface-design.md`, `deep-modules.md`, `refactoring.md`
+
+#### `project/vibe-coder/`
+Seven-phase interactive workflow for implementing a feature or fix with explicit approval gates between phases. Starts with research and design, then moves into a strict one-slice-at-a-time TDD loop.
+
+**Use for:** Planning-first implementation, collaborative feature development, phased delivery where the user wants to review each artifact before proceeding
+
+**Phases:** Research and plan, define data structures, define APIs and skeletons, define ordered TODO slices, write one red test, make it green with minimal code, refactor if worthwhile
 
 #### `project/diagnose/`
 Disciplined diagnosis loop for hard bugs and performance regressions. Emphasizes building a feedback loop before hypothesizing.
@@ -469,9 +490,12 @@ skills/
 │   ├── htmx/
 │   ├── stripe/
 │   ├── pptx-gen/
-│   └── revealjs/
+│   ├── revealjs/
+│   ├── caldir/
+│   └── skill-creator/
 └── project/           # Engineering workflow & project management
     ├── tdd/
+    ├── vibe-coder/
     ├── diagnose/
     ├── triage/
     ├── to-issues/
@@ -540,8 +564,9 @@ Or:
 3. `to-prd` → create PRD from context
 4. `to-issues` → break PRD into vertical slices
 5. `triage` → move issues through workflow
-6. `tdd` → build features test-first
-7. `diagnose` → debug hard issues
+6. `vibe-coder` → run a gated design-to-TDD delivery loop
+7. `tdd` → build features test-first
+8. `diagnose` → debug hard issues
 
 ---
 
@@ -578,6 +603,8 @@ Or:
 2. `stripe` - Always verify webhook signatures, handle async events
 3. `pptx-gen` - Avoid common pitfalls (no "#" in colors, fresh objects for shadows)
 4. `revealjs` - Choose colors based on content, review all slides visually, use Edit tool incrementally
+5. `caldir` - Prefer the CLI for creating events, trust configured defaults, sync after manual edits
+6. `skill-creator` - Keep skills tightly scoped and make the description specific enough to trigger correctly
 
 ### For Project Management
 
@@ -586,10 +613,11 @@ Or:
 3. Use `to-prd` to synthesize conversation into structured PRD
 4. Use `to-issues` to break plans into vertical slices (thin end-to-end paths, not horizontal layers)
 5. Use `triage` to move issues through state machine (`needs-triage` → `ready-for-agent` / `ready-for-human` / `wontfix`)
-6. Use `tdd` for vertical-slice implementation (one test → one impl → repeat)
-7. Use `diagnose` for hard bugs (build feedback loop first, then hypothesize)
-8. Use `caveman` mode when token budget is tight
-9. Use `zoom-out` when unfamiliar with code area
+6. Use `vibe-coder` when the user wants explicit approval gates before each implementation phase
+7. Use `tdd` for vertical-slice implementation (one test → one impl → repeat)
+8. Use `diagnose` for hard bugs (build feedback loop first, then hypothesize)
+9. Use `caveman` mode when token budget is tight
+10. Use `zoom-out` when unfamiliar with code area
 
 ---
 
@@ -622,6 +650,8 @@ Or:
 - Payments → `stripe`
 - PowerPoint presentations → `pptx-gen`
 - HTML presentations → `revealjs`
+- Calendar management → `caldir`
+- Skill authoring → `skill-creator`
 
 **Project management & workflow:**
 - Configure repo → `setup-project-skills`
@@ -629,6 +659,7 @@ Or:
 - Create PRD → `to-prd`
 - Break into issues → `to-issues`
 - Issue workflow → `triage`
+- Gated build workflow → `vibe-coder`
 - Test-driven dev → `tdd`
 - Hard bugs → `diagnose`
 - Edit articles → `edit-article`
