@@ -1,20 +1,6 @@
 ---
 name: concept-implement
-description: >-
-  Use this skill when translating concept design specs into working code, or
-  when structuring a codebase around concepts and synchronizations. Trigger
-  when someone says "implement this concept", "how do I code this concept spec",
-  "turn this concept into code", "how do I implement concept synchronization",
-  "how should I structure my backend around concepts", "how do I keep concepts
-  independent in code", "convert this concept design to Go/TypeScript/Python",
-  "add a concept to an existing codebase", "refactor code to align with
-  concepts", "create APIs, database tables, services, handlers, UI flows, or
-  tests from concept specs", or "create code changes after a concept audit".
-  Also use when someone asks how to translate a concept's state model into a
-  database schema, or how to implement the synchronization layer that connects
-  concepts. Uses Go for code examples unless another language is specified.
-  This skill applies whether the user has a formal spec or is just thinking
-  through implementation of a well-defined user-facing concept.
+description: Translate concept design specs into working code or structure a codebase around concepts and synchronizations. Use when implementing a concept, mapping its state model to modules or database schemas, preserving concept independence, creating APIs and tests from specs, refactoring code toward concepts, or implementing the synchronization layer between concepts. Uses Go examples unless another language is specified.
 ---
 
 # Concept Implementation

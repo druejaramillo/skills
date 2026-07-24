@@ -1,3 +1,8 @@
+---
+name: web-ui
+description: Audit web interfaces against accessibility, focus, forms, animation, typography, performance, and interaction guidelines. Use when reviewing a web page or component for common UI issues and actionable fixes.
+---
+
 # Web Interface Guidelines
 
 Read files, check against rules below. Output concise but comprehensive—sacrifice grammar for brevity. High signal-to-noise.

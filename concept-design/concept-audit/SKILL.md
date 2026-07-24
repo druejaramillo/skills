@@ -1,23 +1,6 @@
 ---
 name: concept-audit
-description: >-
-  Use this skill when analyzing existing software, codebases, APIs, schemas,
-  or system descriptions through the lens of concept design (Daniel Jackson's
-  The Essence of Software). Trigger when someone says "audit this codebase",
-  "review the design of this system", "analyze my app's concepts", "are these
-  concepts well-designed", "what concepts does this system have", "review my
-  API design", "find overloaded concepts", "is my design modular", "identify
-  the concepts in a project", "evaluate whether code matches concept specs",
-  "find missing concepts", "find duplicate/redundant concepts", "map features
-  to concepts", "refactor toward concept design", "analyze domain-driven design
-  boundaries through concepts", or "implement audit recommendations". Also
-  trigger when someone pastes or uploads code, schemas, API docs, or a system
-  description and wants a conceptual design review, or asks whether features
-  are well-bounded, whether functionality is correctly separated, or whether
-  there are modularity or mental-model problems. Produces structured output
-  covering concept inventory, quality assessment, composition analysis,
-  genuine strengths, and targeted recommendations — never manufacturing
-  findings where the design is sound.
+description: Analyze existing software, codebases, APIs, schemas, or system descriptions through Daniel Jackson's concept design methodology. Use when auditing architecture, identifying concepts, evaluating boundaries or modularity, mapping code to concept specs, or finding overloaded, duplicate, or missing concepts. Produces a structured audit with inventory, quality assessment, composition analysis, strengths, and targeted recommendations.
 ---
 
 # Concept Audit

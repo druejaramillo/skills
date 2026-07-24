@@ -1,22 +1,6 @@
 ---
 name: concept-design
-description: >-
-  Use this skill when designing, writing, reviewing, editing, splitting,
-  merging, or critiquing software concepts in the style of Daniel Jackson's
-  concept design methodology (The Essence of Software). Trigger when someone
-  says "design a concept for X", "write a concept spec", "review my concept",
-  "is this a good concept", "help me define the concept of X",
-  "split/merge/refine this concept", "what concepts does this feature need",
-  "improve this concept spec", "turn a feature into a concept", "find the
-  essence of a feature", "define the concepts for a product area", or "prepare
-  concept specs before implementation". Also trigger any time someone is
-  thinking about user-facing software functionality in terms of discrete
-  reusable units, or mentions concept overloading, concept independence,
-  operational principles, concept catalogs, concept dependence, design moves
-  like split/merge/unify/specialize/tighten/loosen, or asks how concepts relate
-  to DDD, aggregates, bounded contexts, or user stories. Use even when the user
-  doesn't say "concept design" — if they're trying to define what a software
-  feature does and how it's bounded, this skill applies.
+description: Design, write, review, edit, split, merge, or critique software concepts using Daniel Jackson's concept design methodology. Use when defining user-facing functionality as discrete reusable units, writing concept specs, refining boundaries, discussing operational principles or concept independence, or relating concepts to DDD, aggregates, bounded contexts, and user stories.
 ---
 
 # Concept Design

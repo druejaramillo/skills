@@ -1,3 +1,8 @@
+---
+name: stripe
+description: Guidance for building Stripe payment flows with Go, templ, htmx, and Tailwind. Use when integrating Checkout Sessions, PaymentIntents, subscriptions, saved payment methods, or Stripe webhooks.
+---
+
 # Stripe Payment Systems Skill (Go + templ + htmx + Tailwind)
 
 A practical, end-to-end guide to building robust payment flows with Stripe, optimized for a Go backend and server-rendered UI (templ + htmx + Tailwind).
