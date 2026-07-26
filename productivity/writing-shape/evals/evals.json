@@ -1,0 +1,43 @@
+{
+  "skill_name": "writing-shape",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Shape these materials into a 900-word essay for new managers and save it as /home/me/drafts/feedback.md: my observation that people avoid feedback when they fear conflict; a 2024 internal survey showing 62% of respondents want more frequent feedback; and an interview quote from Priya Shah, dated May 2025, saying 'Specificity makes feedback actionable.' Do not claim the survey represents all companies.",
+      "expected_output": "Builds a claim ledger and proposes an essay whose definitions and evidence precede conclusions. It attributes the internal survey and interview quote, keeps the author's observation distinct, and honors the limit on generalization. It saves only to the approved new draft path after author approval, without modifying source material or publishing.",
+      "assertions": [
+        "Records an attributable claim ledger",
+        "Places reader prerequisites and evidence before dependent conclusions",
+        "Keeps the author's observation distinct from source-backed claims",
+        "Attributes the survey and interview quote",
+        "Does not overgeneralize the internal survey",
+        "Uses only the approved new target path after author approval",
+        "Does not modify source material or publish the draft"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Make a persuasive article from these anonymous notes and write over the original file. Invent citations if any evidence is missing.",
+      "expected_output": "Stops rather than drafting or writing. It refuses to invent citations and to overwrite the source file, and asks for a target reader, form, attributable source pile, permitted claims, and an approved new draft path.",
+      "assertions": [
+        "Refuses to fabricate citations or evidence",
+        "Refuses to overwrite the source file",
+        "Requests source attribution and claim boundaries",
+        "Requests reader, form, and approved new target path"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Save these two stray observations and a quotation in my writing quarry so I can decide what to make of them later.",
+      "expected_output": "Does not shape an article. It identifies raw-material capture as the appropriate mode and preserves the distinction between author observations and attributed source material.",
+      "assertions": [
+        "Does not invent an article structure or audience",
+        "Distinguishes fragment capture from draft shaping",
+        "Preserves author/source attribution boundaries"
+      ],
+      "files": []
+    }
+  ]
+}

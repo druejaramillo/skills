@@ -1,23 +1,23 @@
 ---
 name: to-prd
-description: Turn the current conversation context into a PRD and publish it to the project issue tracker. Use when user wants to create a PRD from the current context.
+description: Turn already-discussed work into a faithful, durable PRD. Use when user wants to create a PRD from the current context, a decision record, a prototype result, or an existing issue.
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a PRD. Do NOT interview the user — just synthesize what you already know.
+This skill takes the available conversation context and codebase understanding and produces a PRD. It is synthesis, not a new interview: do not reopen settled questions or invent decisions. It may follow a conversation, grill, prototype, or issue, but none is required.
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-project-skills` if not.
+An issue tracker is needed only to publish the approved PRD. If tracker configuration is absent, tell the user and ask whether they want to run `/setup-project-skills`; do not invoke it automatically.
 
 ## Process
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the PRD, and respect any ADRs in the area you're touching.
+1. Collect the sources: relevant conversation, confirmed decision records, prototype results, issue history, and codebase evidence. Explore the repository as needed to verify current constraints. Use the project's domain glossary vocabulary throughout the PRD and respect applicable ADRs.
 
-2. Sketch out the major modules you will need to build or modify to complete the implementation. Actively look for opportunities to extract deep modules that can be tested in isolation.
+2. Trace each material requirement to a source decision or evidence. If scope, public behavior, an architectural trade-off, or a test seam is materially unresolved, stop and ask the focused question needed to complete the PRD. Do not convert uncertainty into an implementation prescription.
 
-A deep module (as opposed to a shallow module) is one which encapsulates a lot of functionality in a simple, testable interface which rarely changes.
+3. Describe the likely modules and public seams at a durable level. Look for opportunities to encapsulate complexity behind simple, testable interfaces, but do not prescribe file paths, code snippets, or a speculative internal structure.
 
-Check with the user that these modules match their expectations. Check with the user which modules they want tests written for.
+4. Draft the PRD below and show it for approval. Publish only after the user approves the draft. Do not automatically add a workflow state or label; if the selected tracker requires one, use a configured neutral state only with the user's approval.
 
-3. Write the PRD using the template below, then publish it to the project issue tracker. Apply the `needs-triage` triage label so it enters the normal triage flow.
+Before completion, check that material requirements have traceable sources, behavior and test seams are concrete, and no stale file-path prescription was invented.
 
 <prd-template>
 
@@ -33,7 +33,7 @@ The solution to the problem, from the user's perspective.
 
 A LONG, numbered list of user stories. Each user story should be in the format of:
 
-1. As an <actor>, I want a <feature>, so that <benefit>
+1. As a <user>, I want a <feature>, so that <benefit>
 
 <user-story-example>
 1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
@@ -54,6 +54,10 @@ A list of implementation decisions that were made. This can include:
 - Specific interactions
 
 Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
+
+## Decision Traceability
+
+For each material requirement or exclusion, cite the relevant conversation decision, decision record, issue, prototype result, or codebase evidence. Mark any assumption explicitly.
 
 ## Testing Decisions
 

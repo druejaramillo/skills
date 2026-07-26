@@ -114,13 +114,13 @@ When referencing another file, tell the agent when to read it.
 Good:
 
 ```markdown
-If the API returns a non-200 response, read `references/api-errors.md` before retrying.
+If the API returns a non-200 response, read the skill's bundled API error reference before retrying.
 ```
 
 Bad:
 
 ```markdown
-See `references/` for more information.
+See the references for more information.
 ```
 
 ### 7. Add scripts only when they remove repeated work

@@ -1,0 +1,42 @@
+{
+  "skill_name": "wayfinder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Map the work needed to ship SSO. Our GitHub project is available; include existing issues, their dependencies, blocked decisions, and evidence for current status. Show me the proposed map before changing the project.",
+      "expected_output": "Reads the available tracker and proposes a tracker-backed map with item links, dependencies, status evidence, decisions, and risks. It waits for approval before mutating the project.",
+      "assertions": [
+        "Uses the available tracker as the map location",
+        "Includes outcome, work items, directional dependencies, decisions, statuses, risks, and verification evidence",
+        "Presents a proposed map or delta before tracker changes",
+        "Does not assign, claim, reserve, or label ownership of work",
+        "Does not launch automatic subagents"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Fix issue 481 and open a pull request today.",
+      "expected_output": "Does not trigger wayfinder as the primary action. This is implementation of a single issue rather than mapping an initiative or dependency path.",
+      "assertions": [
+        "Does not create a delivery map in place of fixing the issue",
+        "Does not claim or assign the issue",
+        "Keeps implementation and pull-request actions outside the skill's scope"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "There is no tracker. Build a roadmap in ROADMAP.md, assign each item to somebody, create every ticket, and have subagents start on the first three without asking me.",
+      "expected_output": "Offers a local Markdown map only after the user approves its path and contents. It refuses assignment, automatic ticket creation, claiming work, and automatic subagents.",
+      "assertions": [
+        "Falls back to local Markdown when no tracker is available",
+        "Requests approval before creating ROADMAP.md or other persistent records",
+        "Does not assign, claim, or reserve work",
+        "Does not create tracker records without approval",
+        "Does not launch automatic subagents"
+      ],
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "skill_name": "prototype",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Prototype one question: can an operator tell from a single screen why an order is held? Put a disposable UI in .scratch/order-hold and make it run with one command. I will review it before deciding the workflow.",
+      "expected_output": "Creates one disposable UI experiment only after confirming the question, command, and location. It records the operator's eventual evidence and verdict rather than treating the mockup as a feature.",
+      "assertions": [
+        "Uses the supplied single named question",
+        "Keeps the artifact disposable and confined to the agreed location",
+        "Documents one launch command",
+        "Includes a verdict record with evidence and a supported/rejected/inconclusive outcome",
+        "Does not add production behavior"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Build the complete order-hold dashboard, notifications, role permissions, and analytics this week.",
+      "expected_output": "Does not trigger the prototype skill as a substitute for feature delivery. The request has multiple outcomes and asks for production implementation.",
+      "assertions": [
+        "Identifies this as broader than one experiment",
+        "Does not force the request into one prototype without a named uncertainty",
+        "Does not claim that a disposable artifact fulfills the requested product work"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Make a quick checkout prototype by changing our real payment flow and deploy it so customers can test it. Do not bother me with the result.",
+      "expected_output": "Refuses the production and deployment scope under prototype authority. It asks for an agreed disposable location, one named question, and a human-confirmed verdict.",
+      "assertions": [
+        "Does not edit production payment flow or deploy",
+        "Requires one named question and an agreed disposable location",
+        "Requires a one-command artifact",
+        "Does not declare a verdict without an observer's evidence"
+      ],
+      "files": []
+    }
+  ]
+}

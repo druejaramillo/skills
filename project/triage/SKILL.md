@@ -1,11 +1,11 @@
 ---
 name: triage
-description: Triage issues through a state machine driven by triage roles. Use when user wants to create an issue, triage issues, review incoming bugs or feature requests, prepare issues for an AFK agent, or manage issue workflow.
+description: Help a maintainer classify incoming issues and, when explicitly requested, external pull requests using evidence, durable notes, redundancy search, and neutral workflow states. Use when user wants to triage issues, review incoming bugs or feature requests, assess an external PR, or manage issue workflow.
 ---
 
 # Triage
 
-Move issues on the project issue tracker through a small state machine of triage roles.
+Help a maintainer investigate and classify tracker work through a small state machine of neutral workflow states. Triage does not implement, assign work, invoke other skills, or mutate public tracker state without authorization.
 
 Every comment or issue posted during triage **must** start with this disclaimer:
 
@@ -15,35 +15,34 @@ Every comment or issue posted during triage **must** start with this disclaimer:
 
 ## Issue tracker
 
-The issue tracker config should have been provided to you — run `/setup-project-skills` if not.
+Use the configured issue tracker when present. If configuration is absent, tell the user about `/setup-project-skills`; do not invoke it automatically.
 
-**If no issue tracker is configured, or the config is missing:** fall back to `ISSUES.md` at the repo root. See the ISSUES.md format in [../setup-project-skills/issue-tracker-issues-md.md](../setup-project-skills/issue-tracker-issues-md.md). Create the file if it doesn't exist.
+**If no issue tracker is configured:** use an existing `ISSUES.md` at the repo root when present. Otherwise ask whether the user wants to configure a tracker or use `ISSUES.md` as a local fallback; do not create it during investigation. See the format in [../setup-project-skills/issue-tracker-issues-md.md](../setup-project-skills/issue-tracker-issues-md.md).
 
 ## Reference docs
 
-- [AGENT-BRIEF.md](AGENT-BRIEF.md) — how to write durable agent briefs
+- [WORK-BRIEF.md](WORK-BRIEF.md) — how to write durable scope briefs
 - [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md) — how the `.out-of-scope/` knowledge base works
 
-## Roles
+## Categories and States
 
-Two **category** roles:
+Two categories:
 
 - `bug` — something is broken
 - `enhancement` — new feature or improvement
 
-Five **state** roles:
+Four neutral workflow states:
 
 - `needs-triage` — maintainer needs to evaluate
 - `needs-info` — waiting on reporter for more information
-- `ready-for-agent` — fully specified, ready for an AFK agent
-- `ready-for-human` — needs human implementation
+- `planned` — accepted and sufficiently understood for scheduling
 - `wontfix` — will not be actioned
 
-Every triaged issue should carry exactly one category role and one state role. If state roles conflict, flag it and ask the maintainer before doing anything else.
+Every triaged issue should carry exactly one category and one state where the tracker supports them. These states describe the work's condition, never its implementer. If states conflict, flag the conflict and ask the maintainer before doing anything else.
 
-These are canonical role names — the actual label strings used in the issue tracker may differ. The mapping should have been provided to you — run `/setup-project-skills` if not. For `ISSUES.md` trackers, use the canonical names directly in the issue header line.
+These are canonical names; the actual tracker values may differ. Read the configured mapping if present. For `ISSUES.md` trackers, use the canonical names directly in the issue header line. If no tracker configuration exists, tell the user rather than silently running setup.
 
-State transitions: an unlabeled issue normally goes to `needs-triage` first; from there it moves to `needs-info`, `ready-for-agent`, `ready-for-human`, or `wontfix`. `needs-info` returns to `needs-triage` once the reporter replies. The maintainer can override at any time — flag unusual transitions and ask before proceeding.
+State transitions: an unlabeled issue normally goes to `needs-triage`; from there it may move to `needs-info`, `planned`, or `wontfix`. `needs-info` returns to `needs-triage` when the reporter replies, and `planned` returns to `needs-triage` if scope or evidence changes. The maintainer can override, but flag unusual transitions and ask before proceeding.
 
 ## Invocation
 
@@ -51,8 +50,8 @@ The maintainer invokes `/triage` and describes what they want in natural languag
 
 - "Show me anything that needs my attention"
 - "Let's look at #42" / "Let's look at ISSUE-003"
-- "Move #42 to ready-for-agent"
-- "What's ready for agents to pick up?"
+- "Move #42 to planned"
+- "Review external PR #42 before I respond"
 
 ## Show what needs attention
 
@@ -66,29 +65,36 @@ Show counts and a one-line summary per issue. Let the maintainer pick.
 
 ## Triage a specific issue
 
-1. **Gather context.** Read the full issue (body, comments, labels, reporter, dates). Parse any prior triage notes so you don't re-ask resolved questions. Explore the codebase using the project's domain glossary, respecting ADRs in the area. Read `.out-of-scope/*.md` and surface any prior rejection that resembles this issue.
+1. **Gather context.** Read the full issue (body, comments, labels, reporter, dates). Parse prior triage notes so resolved questions are not re-asked. Explore relevant code using the project's domain glossary and ADRs. Read `.out-of-scope/*.md` and surface prior rejections that resemble this issue.
 
-2. **Recommend.** Tell the maintainer your category and state recommendation with reasoning, plus a brief codebase summary relevant to the issue. Wait for direction.
+2. **Search for redundancy.** Search the tracker, closed work, release notes, and codebase using the issue's domain terms and likely synonyms. Determine whether the requested behavior already exists, is already planned, duplicates another issue, or resembles a prior rejection. Cite the evidence and distinguish those cases; do not close a request as a duplicate on title similarity alone.
 
-3. **Reproduce (bugs only).** Before any grilling, attempt reproduction: read the reporter's steps, trace the relevant code, run tests or commands. Report what happened — successful repro with code path, failed repro, or insufficient detail (a strong `needs-info` signal).
+3. **Reproduce (bugs only).** Before asking new questions, attempt reproduction: read the reporter's steps, trace the relevant code, and run safe tests or commands. Report a successful reproduction with code path, a failed reproduction, or insufficient detail, which is a strong `needs-info` signal.
 
-4. **Grill (if needed).** If the issue needs fleshing out, run a `/grill --docs` session.
+4. **Recommend.** Give the maintainer a category and neutral-state recommendation with reasoning, relevant codebase evidence, redundancy findings, and any missing information. Recommend `/grill` when a meaningful decision needs resolution, but do not invoke it automatically.
 
-5. **Apply the outcome:**
-   - `ready-for-agent` — post an agent brief ([AGENT-BRIEF.md](AGENT-BRIEF.md)).
-   - `ready-for-human` — same structure as an agent brief, but note why it can't be delegated.
-   - `needs-info` — post triage notes (template below).
-   - `wontfix` (bug) — polite explanation, then close.
-   - `wontfix` (enhancement) — write to `.out-of-scope/`, link to it from a comment, then close ([OUT-OF-SCOPE.md](OUT-OF-SCOPE.md)).
-   - `needs-triage` — apply the role. Optional comment if there's partial progress.
+5. **Apply an authorized outcome.** Wait for explicit maintainer approval before adding labels, posting comments, updating files, closing issues, or taking any public action.
+   - `planned` — apply the state. Post a neutral work brief when durable scope needs to travel with the issue ([WORK-BRIEF.md](WORK-BRIEF.md)).
+   - `needs-info` — post triage notes using the template below.
+   - `wontfix` (bug) — post a polite, evidence-backed explanation, then close only with approval.
+   - `wontfix` (enhancement) — write to `.out-of-scope/`, link it from an approved comment, then close ([OUT-OF-SCOPE.md](OUT-OF-SCOPE.md)).
+   - `needs-triage` — apply the state. A comment is optional when partial progress needs preserving.
+
+## Optional External PR Triage
+
+Use this only when the maintainer explicitly asks to assess an external pull request. Read its description, linked issues, diff, reviews, status checks, and relevant code. Verify the claimed behavior with available evidence and perform the same redundancy search used for issues.
+
+Report the observed behavior, risks, missing tests or scope, relationship to existing work, and a recommendation. Do not comment, submit a review, request changes, approve, merge, label, or close the PR without explicit maintainer authorization. A PR review is not an instruction to implement or alter the contribution.
 
 ## Quick state override
 
-If the maintainer says "move #42 to ready-for-agent", trust them and apply the role directly. Confirm what you're about to do (role changes, comment, close), then act. Skip grilling. If moving to `ready-for-agent` without a grilling session, ask whether they want to write an agent brief.
+If the maintainer gives a clear command such as "move #42 to planned", that authorizes only the named state change. Restate the exact change and act; ask before adding a comment, closing, or making any other public mutation. Do not reopen discovery unless the requested change conflicts with available evidence.
 
 ## Needs-info template
 
 ```markdown
+> *This was generated by AI during triage.*
+
 ## Triage Notes
 
 **What we've established so far:**

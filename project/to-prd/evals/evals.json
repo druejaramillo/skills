@@ -1,0 +1,38 @@
+{
+  "skill_name": "to-prd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn our discussion about export scheduling into a PRD.",
+      "expected_output": "Faithfully synthesizes the discussion and relevant repository evidence into a PRD with traceability, implementation and testing decisions, exclusions, and no invented file-path prescription.",
+      "assertions": [
+        "Triggers for creating a PRD from discussed work",
+        "Traces material requirements to decisions or evidence",
+        "Uses concrete public behavior and test seams",
+        "Does not reopen settled questions"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Triage issue #42 and tell me whether it is a duplicate.",
+      "expected_output": "Does not produce a PRD; it identifies this as triage work.",
+      "assertions": [
+        "Does not trigger for issue classification",
+        "Does not publish a specification for a triage request"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Make a PRD from this partial conversation and publish it right away.",
+      "expected_output": "Stops for material unresolved scope or behavior, presents a draft for approval, and does not automatically assign a tracker state or publish before approval.",
+      "assertions": [
+        "Does not invent unresolved decisions",
+        "Requires approval before publication",
+        "Does not automatically add a workflow state or label"
+      ],
+      "files": []
+    }
+  ]
+}

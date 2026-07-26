@@ -26,9 +26,21 @@ Spend disproportionate effort here. **Be aggressive. Be creative. Refuse to give
 7. **Property / fuzz loop.** If the bug is "sometimes wrong output", run 1000 random inputs and look for the failure mode.
 8. **Bisection harness.** If the bug appeared between two known states (commit, dataset, version), automate "boot at state X, check, repeat" so you can `git bisect run` it.
 9. **Differential loop.** Run the same input through old-version vs new-version (or two configs) and diff outputs.
-10. **HITL bash script.** Last resort. If a human must click, drive _them_ with `scripts/hitl-loop.template.sh` so the loop is still structured. Captured output feeds back to you.
+10. **Guided reproduction script.** Last resort when an external UI cannot be driven automatically. With the user's consent, use `scripts/guided-repro-loop.template.sh` to capture the required steps and observations in a structured form.
 
 Build the right feedback loop, and the bug is 90% fixed.
+
+### Prove the loop before trusting it
+
+Record and run a feedback-loop proof before moving on:
+
+- **Procedure and input:** exact command or steps, fixture, environment, and reset conditions.
+- **Red signal:** the precise failure, wrong output, timing threshold, or assertion expected before a repair.
+- **Observed baseline:** actual output, exit status, error, or measurement from the executed baseline run.
+- **Repeatability:** number of runs, failures, and flake rate where relevant.
+- **Cost:** approximate runtime and setup cost.
+
+A loop is red-capable only when the executed baseline produces the reported failure signal. A command that merely runs or a test that already passes is not evidence. Improve the loop until it is sufficiently fast and deterministic to distinguish hypotheses, or stop and request the missing access or artifact.
 
 ### Iterate on the loop itself
 
@@ -62,7 +74,13 @@ Confirm:
 
 Do not proceed until you reproduce the bug.
 
-## Phase 3 — Hypothesise
+## Phase 3 — Minimize
+
+Reduce the reproduced case to the smallest input, configuration, environment, and sequence that still produces the same failure signal. Remove one variable at a time and re-run the feedback loop after each reduction.
+
+Record the minimized case and its preserved symptom. Do not replace the user's reported failure with a nearby easier failure. If minimization changes the symptom, return to the last known-good reproduction and state the limitation.
+
+## Phase 4 — Hypothesise
 
 Generate **3–5 ranked hypotheses** before testing any of them. Single-hypothesis generation anchors on the first plausible idea.
 
@@ -72,11 +90,11 @@ Each hypothesis must be **falsifiable**: state the prediction it makes.
 
 If you cannot state the prediction, the hypothesis is a vibe — discard or sharpen it.
 
-**Show the ranked list to the user before testing.** They often have domain knowledge that re-ranks instantly ("we just deployed a change to #3"), or know hypotheses they've already ruled out. Cheap checkpoint, big time saver. Don't block on it — proceed with your ranking if the user is AFK.
+Show the ranked list to the user before testing when practical. Their domain knowledge may re-rank it or rule out a hypothesis. If their input is unavailable, label the ranking provisional and continue only with non-invasive tests inside the agreed diagnostic scope. Ask before production instrumentation or a consequential choice.
 
-## Phase 4 — Instrument
+## Phase 5 — Instrument
 
-Each probe must map to a specific prediction from Phase 3. **Change one variable at a time.**
+Each probe must map to a specific prediction from Phase 4. **Change one variable at a time.**
 
 Tool preference:
 
@@ -88,7 +106,7 @@ Tool preference:
 
 **Perf branch.** For performance regressions, logs are usually wrong. Instead: establish a baseline measurement (timing harness, `performance.now()`, profiler, query plan), then bisect. Measure first, fix second.
 
-## Phase 5 — Fix + regression test
+## Phase 6 — Fix + regression test
 
 Write the regression test **before the fix** — but only if there is a **correct seam** for it.
 
@@ -98,20 +116,21 @@ A correct seam is one where the test exercises the **real bug pattern** as it oc
 
 If a correct seam exists:
 
-1. Turn the minimised repro into a failing test at that seam.
+1. Turn the minimized repro into a failing test at that seam.
 2. Watch it fail.
 3. Apply the fix.
 4. Watch it pass.
 5. Re-run the Phase 1 feedback loop against the original (un-minimised) scenario.
 
-## Phase 6 — Cleanup + post-mortem
+## Phase 7 — Cleanup + post-mortem
 
 Required before declaring done:
 
 - [ ] Original repro no longer reproduces (re-run the Phase 1 loop)
 - [ ] Regression test passes (or absence of seam is documented)
+- [ ] Feedback-loop proof and minimized case are recorded with the diagnosis
 - [ ] All `[DEBUG-...]` instrumentation removed (`grep` the prefix)
 - [ ] Throwaway prototypes deleted (or moved to a clearly-marked debug location)
 - [ ] The hypothesis that turned out correct is stated in the commit / PR message — so the next debugger learns
 
-**Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling) hand off to the `/improve-codebase-architecture` skill with the specifics. Make the recommendation **after** the fix is in, not before — you have more information now than when you started.
+Then ask what would have prevented this bug. If the answer involves architectural change, record a concrete follow-up recommendation after the fix is understood. Do not turn diagnosis into an automatic refactor or architecture workflow.

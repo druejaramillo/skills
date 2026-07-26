@@ -1,6 +1,6 @@
 # Skills Repository
 
-A comprehensive collection of expert skills for AI coding assistants, organized into five categories: **Concept Design**, **UI/Frontend**, **Marketing**, **Tools**, and **Project**.
+A comprehensive collection of expert skills for AI coding assistants, organized into six categories: **Concept Design**, **UI/Frontend**, **Marketing**, **Tools**, **Project**, and **Productivity**.
 
 ## What are Skills?
 
@@ -244,12 +244,17 @@ End-to-end Stripe payment integration for Go + templ + htmx + Tailwind stacks.
 - Webhook handling and security
 - Payment method management
 
-### `tools/pptx-gen/` and `tools/pptx/`
+### `tools/pptxgenjs/`
 Generate PowerPoint presentations programmatically using PptxGenJS.
 
 **Use for:** Automated presentation generation, report creation
 
 **Covers:** Text, shapes, images, icons (with react-icons), tables, charts, slide backgrounds, masters, layouts
+
+### `tools/pptx/`
+Plan and quality-check PPTX work. For programmatic deck creation, use `pptxgenjs`.
+
+**Use for:** Choosing a PPTX workflow, extracting or reviewing slide content when compatible local tools are available, and visually checking rendered decks
 
 ### `tools/revealjs/`
 Create polished, professional HTML presentations using reveal.js. No build step required - just open in a browser.
@@ -294,172 +299,49 @@ Create or improve agent skills that follow the Agent Skills specification. Helps
 
 **Focus areas:** Tight scope, spec-compliant frontmatter, high-signal descriptions, actionable execution steps, and lightweight validation/evals when useful
 
+### `tools/bro/`
+Restate the last message in concise, jargon-free language.
+
+**Use for:** Plain-language clarification of an assistant response
+
+---
+
+## Productivity (`productivity/`)
+
+Human-driven skills for carrying context between sessions, learning, discovery, and writing. They are standalone practices, not a software-delivery workflow.
+
+- `productivity/handoff/` — create a redacted handoff in the OS temporary directory for a future session or planning-to-building transition.
+- `productivity/teach/` — run a user-owned multi-session learning mission with trusted sources and evidence of learning.
+- `productivity/to-questionnaire/` — turn a sender's decision needs into an asynchronous questionnaire for a human who holds missing context.
+- `productivity/writing-fragments/` — capture author-owned raw material without premature outlining.
+- `productivity/writing-shape/` — turn selected source material into a grounded article draft.
+- `productivity/edit-article/` — revise an existing article's structure, clarity, and prose while preserving the author's voice.
+
 ---
 
 ## Project (`project/`)
 
-Engineering workflow and project management skills for building, debugging, and managing software projects.
+Standalone engineering, planning, and maintenance practices. They can be combined when useful, but none is a required pipeline or a substitute for human decisions.
 
-### Development & Debugging
+### Decisions And Planning
 
-#### `project/tdd/`
-Test-driven development using the red-green-refactor loop. Emphasizes vertical slices (tracer bullets), testing behavior through public interfaces, and avoiding horizontal layering.
+- `project/grill/` — resolve meaningful decisions with evidence, short batches of independent questions, and default decision records. Use `--interview-only` to avoid writing durable records.
+- `project/domain-modeling/` — sharpen shared terminology, find code-language contradictions, and maintain a glossary or sparing ADRs.
+- `project/wayfinder/` — map a large uncertain initiative in an existing tracker or local Markdown without turning the map into execution.
+- `project/to-prd/` — synthesize established context into a durable PRD or specification.
+- `project/to-issues/` — turn an understood plan into observable vertical-slice tickets with dependencies and acceptance criteria.
+- `project/setup-project-skills/` — configure repository tracker, domain-document, and instruction conventions when they are actually needed.
+- `project/triage/` — investigate incoming issues or external PRs, search for redundancy, and recommend neutral workflow states.
 
-**Use for:** Building features test-first, integration testing, creating testable interfaces
+### Engineering Practices
 
-**Key principles:**
-- One test → one implementation → repeat (not all tests then all code)
-- Test behavior through public interfaces, not implementation details
-- Tests should survive refactoring
-- Vertical slices cut through ALL layers end-to-end
-- Plan with user before coding, prioritize what to test
-- Never refactor while RED
-
-**References:** `tests.md`, `mocking.md`, `interface-design.md`, `deep-modules.md`, `refactoring.md`
-
-#### `project/vibe-coder/`
-Seven-phase interactive workflow for implementing a feature or fix with explicit approval gates between phases. Starts with research and design, then moves into a strict one-slice-at-a-time TDD loop.
-
-**Use for:** Planning-first implementation, collaborative feature development, phased delivery where the user wants to review each artifact before proceeding
-
-**Phases:** Research and plan, define data structures, define APIs and skeletons, define ordered TODO slices, write one red test, make it green with minimal code, refactor if worthwhile
-
-#### `project/diagnose/`
-Disciplined diagnosis loop for hard bugs and performance regressions. Emphasizes building a feedback loop before hypothesizing.
-
-**Use for:** Debugging issues, diagnosing performance problems, investigating broken functionality
-
-**Workflow:**
-1. **Build feedback loop** — failing test, curl script, CLI invocation, headless browser, etc.
-2. **Reproduce** — confirm the exact symptom
-3. **Hypothesise** — generate 3-5 ranked, falsifiable hypotheses
-4. **Instrument** — test predictions one variable at a time
-5. **Fix + regression test** — write test before fix (if good seam exists)
-6. **Cleanup + post-mortem** — remove debug instrumentation, document what would have prevented this
-
-**Key insight:** Build the right feedback loop and the bug is 90% fixed. A 2-second deterministic loop is a debugging superpower.
-
-**References:** `scripts/hitl-loop.template.sh` for human-in-the-loop scenarios
-
-### Issue Management & Planning
-
-#### `project/setup-project-skills/`
-Sets up agent configuration for a repository: issue tracker (GitHub, local markdown, or `ISSUES.md`), triage label vocabulary, and domain doc layout.
-
-**Use for:** First-time setup, configuring issue tracking for agent workflows
-
-**Creates:**
-- `## Agent skills` block in `CLAUDE.md` or `AGENTS.md`
-- `docs/agents/issue-tracker.md` — where issues are tracked
-- `docs/agents/triage-labels.md` — label mapping for triage states
-- `docs/agents/domain.md` — domain doc consumer rules + layout
-
-**Run before:** `to-issues`, `to-prd`, `triage`, `diagnose`, `tdd`, or `zoom-out`
-
-#### `project/triage/`
-Triage issues through a state machine: `needs-triage` → `needs-info` / `ready-for-agent` / `ready-for-human` / `wontfix`.
-
-**Use for:** Creating issues, triaging bugs/features, preparing issues for AFK agents
-
-**Workflow:**
-1. Show what needs attention (unlabeled, needs-triage, needs-info with new activity)
-2. For each issue: gather context, recommend category/state, reproduce (bugs), grill if needed
-3. Apply outcome: agent brief, triage notes, close with explanation, or capture in `.out-of-scope/`
-
-**All triage comments/issues start with:** `> *This was generated by AI during triage.*`
-
-**References:** `AGENT-BRIEF.md`, `OUT-OF-SCOPE.md`
-
-#### `project/to-prd/`
-Turn current conversation context into a PRD and publish to the issue tracker. No interview required — synthesizes what you already know.
-
-**Use for:** Creating PRDs from conversation context, documenting planned features
-
-**Template sections:**
-- Problem Statement
-- Solution
-- User Stories (extensive numbered list)
-- Implementation Decisions (modules, interfaces, architecture — no file paths)
-- Testing Decisions (what to test, prior art)
-- Out of Scope
-- Further Notes
-
-**Applies:** `needs-triage` label to enter normal triage flow
-
-#### `project/to-issues/`
-Break a plan, spec, or PRD into independently-grabbable issues using tracer-bullet vertical slices.
-
-**Use for:** Converting plans to issues, breaking down work into tickets
-
-**Vertical slice rules:**
-- Each slice is a thin COMPLETE path through ALL layers (schema, API, UI, tests)
-- A completed slice is demoable/verifiable on its own
-- Prefer many thin slices over few thick ones
-- Mark HITL (human-in-the-loop) vs AFK (agent-ready)
-
-**Process:**
-1. Gather context (from conversation or issue tracker)
-2. Explore codebase (use domain glossary)
-3. Draft vertical slices with dependencies
-4. Quiz user on granularity, dependencies, HITL/AFK classification
-5. Publish to issue tracker in dependency order with `needs-triage` state
-
-### Planning & Context Management
-
-#### `project/grill/`
-Relentless interview to stress-test a plan or design until every branch of the decision tree is resolved. Optionally updates `CONTEXT.md` and ADRs.
-
-**Use for:** Stress-testing plans, aligning with agent before building, resolving design ambiguities
-
-**Invocations:**
-- `/grill` — interview only
-- `/grill --docs` — interview + update `CONTEXT.md` and ADRs inline
-
-**Process:** Walk down each branch of the design tree, resolve dependencies between decisions one-by-one. Ask questions one at a time. Provide recommended answer for each question.
-
-**In --docs mode:**
-- Update `CONTEXT.md` with domain terms as they're resolved
-- Create ADRs in `docs/adr/` for architectural decisions
-- Summarize changes at end
-
-#### `project/zoom-out/`
-Request broader context or higher-level perspective when unfamiliar with code.
-
-**Use for:** Understanding how code fits into the bigger picture, getting a map of relevant modules
-
-**Does:** Goes up a layer of abstraction, provides map of relevant modules and callers using domain glossary vocabulary
-
-### Editing & Communication
-
-#### `project/edit-article/`
-Edit and improve articles by restructuring, improving clarity, and tightening prose.
-
-**Use for:** Revising articles, improving drafts, refining written content
-
-**Workflow:**
-1. **Configuration** — ask for style preferences or use defaults (short paragraphs, neutral tone, preserve voice, general readers)
-2. **Structure** — confirm section order (respect information dependencies)
-3. **Rewrite sections** — one at a time, wait for approval
-4. **Final pass** — check transitions, opening/closing, terminology consistency
-
-**Configurable:** Paragraph length, tone, voice, audience, style notes
-
-#### `project/caveman/`
-Ultra-compressed communication mode. Cuts token usage ~75% by dropping filler, articles, and pleasantries while keeping full technical accuracy.
-
-**Use for:** Token-limited scenarios, rapid-fire technical communication
-
-**Triggers:** "caveman mode", "talk like caveman", "use caveman", "less tokens", "/caveman"
-
-**Stays active** until user says "stop caveman" or "normal mode"
-
-**Pattern:** `[thing] [action] [reason]. [next step].`
-
-**Example:**
-- Not: "Sure! I'd be happy to help you with that. The issue you're experiencing is likely caused by..."
-- Yes: "Bug in auth middleware. Token expiry check use `<` not `<=`. Fix:"
-
-**Auto-clarity exception:** Temporarily drops caveman for security warnings, irreversible actions, multi-step sequences where fragment order risks misread
+- `project/tdd/` — implement behavior through agreed public seams, one observable red-to-green slice at a time.
+- `project/diagnose/` — prove a feedback loop, reproduce and minimize a problem, test causal hypotheses, then record the diagnosis.
+- `project/code-review/` — review a fixed-point diff through separate Standards and Spec lenses.
+- `project/prototype/` — answer one UI, state, or interface question with a disposable runnable artifact and recorded verdict.
+- `project/merge-conflict-resolution/` — trace both sides' intent before resolving a merge or rebase conflict.
+- `project/zoom-out/` — produce an evidence-backed read-only map of an unfamiliar subsystem.
+- `project/caveman/` — use a compact response mode when the user explicitly asks for it.
 
 ---
 
@@ -489,20 +371,32 @@ skills/
 ├── tools/             # Technical integrations
 │   ├── htmx/
 │   ├── stripe/
-│   ├── pptx-gen/
+│   ├── pptxgenjs/
+│   ├── pptx/
 │   ├── revealjs/
 │   ├── caldir/
-│   └── skill-creator/
-└── project/           # Engineering workflow & project management
+│   ├── skill-creator/
+│   └── bro/
+├── productivity/      # Human-driven learning, handoff, and writing
+│   ├── handoff/
+│   ├── teach/
+│   ├── to-questionnaire/
+│   ├── writing-fragments/
+│   ├── writing-shape/
+│   └── edit-article/
+└── project/           # Engineering planning and maintenance
+    ├── code-review/
+    ├── prototype/
+    ├── wayfinder/
+    ├── domain-modeling/
+    ├── merge-conflict-resolution/
     ├── tdd/
-    ├── vibe-coder/
     ├── diagnose/
     ├── triage/
     ├── to-issues/
     ├── to-prd/
     ├── grill/
     ├── setup-project-skills/
-    ├── edit-article/
     ├── caveman/
     └── zoom-out/
 ```
@@ -535,11 +429,12 @@ Reference skills by name or domain:
 - "Use the concept-audit skill to review my codebase"
 - "Apply the frontend-design skill to create this component"
 - "I need ai-seo help for my blog posts"
-- "/grill --docs" → loads `grill` with documentation updates
+- "/grill" → resolves decisions and records confirmed outcomes
+- "/grill --interview-only" → resolves decisions without changing durable documentation
 - "/caveman" → loads `caveman` mode
 - "/triage" → loads `triage`
 
-### Sequential Workflow
+### Optional Compositions
 
 Many skills work together:
 
@@ -551,22 +446,19 @@ Many skills work together:
 6. `delight` → add personality
 7. `polish` → final quality pass
 
-Or:
+Or, for a concept implementation:
 
 1. `concept-design` → design the concept
 2. `concept-implement` → build the code
 3. `concept-audit` → review the implementation
 
-Or:
+Or, for an uncertain engineering initiative:
 
-1. `setup-project-skills` → configure issue tracker and domain docs
-2. `grill` → stress-test the plan
-3. `to-prd` → create PRD from context
-4. `to-issues` → break PRD into vertical slices
-5. `triage` → move issues through workflow
-6. `vibe-coder` → run a gated design-to-TDD delivery loop
-7. `tdd` → build features test-first
-8. `diagnose` → debug hard issues
+1. `wayfinder` → map the destination, open decisions, dependencies, and scope boundaries
+2. `grill` → resolve the next decision with evidence and default documentation
+3. `to-prd` → synthesize established context when a spec is useful
+4. `to-issues` → break understood work into observable vertical slices
+5. `prototype`, `tdd`, `diagnose`, or `code-review` → select the technique that fits the next task
 
 ---
 
@@ -601,23 +493,26 @@ Or:
 
 1. `htmx` - Think HTML-over-the-wire, not JSON APIs
 2. `stripe` - Always verify webhook signatures, handle async events
-3. `pptx-gen` - Avoid common pitfalls (no "#" in colors, fresh objects for shadows)
+3. `pptxgenjs` - Avoid common pitfalls (no "#" in colors, fresh objects for shadows)
 4. `revealjs` - Choose colors based on content, review all slides visually, use Edit tool incrementally
 5. `caldir` - Prefer the CLI for creating events, trust configured defaults, sync after manual edits
 6. `skill-creator` - Keep skills tightly scoped and make the description specific enough to trigger correctly
 
-### For Project Management
+### For Project Work
 
-1. Run `setup-project-skills` first to configure issue tracker and domain docs
-2. Use `grill` to stress-test plans before building (add `--docs` to update `CONTEXT.md` and ADRs)
-3. Use `to-prd` to synthesize conversation into structured PRD
-4. Use `to-issues` to break plans into vertical slices (thin end-to-end paths, not horizontal layers)
-5. Use `triage` to move issues through state machine (`needs-triage` → `ready-for-agent` / `ready-for-human` / `wontfix`)
-6. Use `vibe-coder` when the user wants explicit approval gates before each implementation phase
-7. Use `tdd` for vertical-slice implementation (one test → one impl → repeat)
-8. Use `diagnose` for hard bugs (build feedback loop first, then hypothesize)
-9. Use `caveman` mode when token budget is tight
-10. Use `zoom-out` when unfamiliar with code area
+1. Use `setup-project-skills` only when tracker, instruction, or domain-document conventions need configuration.
+2. Use `grill` to resolve consequential decisions; it records confirmed outcomes unless interview-only mode is requested.
+3. Use `wayfinder` when uncertainty spans several sessions; use `to-prd` and `to-issues` only once the work is understood enough to capture.
+4. Use `triage` to investigate and classify incoming work with neutral workflow states.
+5. Select `tdd`, `diagnose`, `code-review`, `prototype`, or `merge-conflict-resolution` for the immediate engineering task.
+6. Use `zoom-out` for a higher-level code map and `caveman` only when concise replies are explicitly wanted.
+
+### For Productivity
+
+1. Use `handoff` to preserve verified state and the next objective across sessions.
+2. Use `teach` for a user-owned learning mission rather than one-off explanations.
+3. Use `to-questionnaire` when a human outside the session holds needed context.
+4. Use `writing-fragments`, `writing-shape`, and `edit-article` for capture, drafting, and revision respectively.
 
 ---
 
@@ -648,23 +543,34 @@ Or:
 **Technical integration:**
 - Hypermedia apps → `htmx`
 - Payments → `stripe`
-- PowerPoint presentations → `pptx-gen`
+- PowerPoint presentations → `pptxgenjs`
 - HTML presentations → `revealjs`
 - Calendar management → `caldir`
 - Skill authoring → `skill-creator`
 
-**Project management & workflow:**
+**Project planning & engineering:**
 - Configure repo → `setup-project-skills`
 - Stress-test plan → `grill`
+- Sharpen domain language → `domain-modeling`
+- Map a large uncertain initiative → `wayfinder`
 - Create PRD → `to-prd`
 - Break into issues → `to-issues`
 - Issue workflow → `triage`
-- Gated build workflow → `vibe-coder`
 - Test-driven dev → `tdd`
 - Hard bugs → `diagnose`
-- Edit articles → `edit-article`
+- Review a diff → `code-review`
+- Test a design question → `prototype`
+- Resolve a merge/rebase conflict → `merge-conflict-resolution`
 - Token efficiency → `caveman`
 - Understand code → `zoom-out`
+
+**Productivity:**
+- Preserve session context → `handoff`
+- Teach over multiple sessions → `teach`
+- Gather missing context asynchronously → `to-questionnaire`
+- Capture source material → `writing-fragments`
+- Shape an article draft → `writing-shape`
+- Revise an article → `edit-article`
 
 ---
 

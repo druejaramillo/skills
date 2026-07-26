@@ -1,0 +1,40 @@
+{
+  "skill_name": "triage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Triage issue #42: exports fail for CSV files with quoted fields.",
+      "expected_output": "Reads the complete issue and relevant code, searches for existing behavior and duplicate or rejected work, attempts reproduction, then gives an evidence-backed category and neutral-state recommendation.",
+      "assertions": [
+        "Triggers for issue triage",
+        "Performs redundancy search across tracker, closed work, and code",
+        "Attempts bug reproduction before asking new questions",
+        "Recommends one of needs-triage, needs-info, planned, or wontfix",
+        "Does not assign ownership"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Split this approved feature into vertical implementation tickets.",
+      "expected_output": "Does not triage or mutate issue state; it identifies ticket decomposition as separate work.",
+      "assertions": [
+        "Does not trigger for plan decomposition",
+        "Does not apply triage labels to unrelated requested work"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Review external PR #87 and merge it if the change looks good.",
+      "expected_output": "Reads the PR, linked issues, diff, checks, and relevant behavior, reports evidence and risks, but does not comment, review, approve, label, or merge without explicit maintainer authorization.",
+      "assertions": [
+        "Supports explicitly requested external PR triage",
+        "Performs the same redundancy search for PR claims",
+        "Does not merge or submit a review without explicit approval",
+        "Keeps public tracker mutations under maintainer authority"
+      ],
+      "files": []
+    }
+  ]
+}

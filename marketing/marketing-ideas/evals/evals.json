@@ -77,12 +77,12 @@
     {
       "id": 6,
       "prompt": "We want to set up a referral program. How should we structure it?",
-      "expected_output": "Should recognize this is specifically a referral program design request. Should defer to or cross-reference the referral-program skill, which provides detailed guidance on referral loop design, incentive structures, implementation, and optimization. May briefly mention referral programs as a marketing idea but should make clear that referral-program is the right skill for detailed program design.",
+      "expected_output": "Should recognize this is specifically a referral-program design request. It should not route to an unavailable skill. It may frame the core referral-loop decisions, including the advocate, incentive, share moment, fraud controls, and measurement plan, before recommending a detailed implementation plan.",
       "assertions": [
         "Recognizes this as a referral program design request",
-        "References or defers to referral-program skill",
-        "Does not attempt detailed referral program design",
-        "May briefly mention as a marketing idea"
+        "Does not route to an unavailable skill",
+        "Frames the core referral-loop decisions",
+        "Recommends a detailed implementation plan"
       ],
       "files": []
     }

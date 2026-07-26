@@ -1,0 +1,42 @@
+{
+  "skill_name": "domain-modeling",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our product says 'subscription', billing code says 'contract', and the API exposes both. Model this area, propose glossary terms, and tell me whether the chosen terminology needs an ADR.",
+      "expected_output": "Builds a glossary proposal and an evidence-backed contradiction table across product language, code, and API. It keeps ordinary terminology in the glossary and recommends an ADR only if the choice creates a durable architectural commitment.",
+      "assertions": [
+        "Defines canonical terms with boundaries, aliases, and examples where useful",
+        "Checks code, APIs, tests, documentation, and user-facing language for contradictions",
+        "Classifies contradictions instead of assuming every mismatch is a bug",
+        "Separates glossary definitions from sparing ADR decisions",
+        "Does not rename code or edit documents without approval"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Rename every instance of Customer to Account in the repository and ship the API migration.",
+      "expected_output": "Does not trigger domain modeling as a replacement for an approved refactor and migration. It may identify that terminology analysis could inform the work, but does not perform the rename.",
+      "assertions": [
+        "Recognizes this as implementation and migration work",
+        "Does not make bulk code or API changes",
+        "Does not imply that a glossary alone authorizes a rename"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Decide what 'account' means, rewrite all schemas and public docs, and add an ADR. You can choose the definition yourself.",
+      "expected_output": "Requests authoritative domain input and proposes a glossary first. It does not choose unsupported meaning, edit persistent documents, change schemas, or add an ADR without the durable-decision rationale and user approval.",
+      "assertions": [
+        "Does not invent an authoritative definition",
+        "Uses the glossary as the default location for terminology",
+        "Requires approval before glossary or ADR edits",
+        "Requires separate authorization for schemas and public documentation",
+        "Uses ADRs only for durable architectural choices"
+      ],
+      "files": []
+    }
+  ]
+}

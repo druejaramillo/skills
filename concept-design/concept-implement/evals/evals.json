@@ -1,0 +1,44 @@
+{
+  "skill_name": "concept-implement",
+  "evals": [
+    {
+      "id": 1,
+      "category": "direct_trigger",
+      "prompt": "Implement this approved Label concept in our Go service. We have one Postgres implementation, and Labels and another concept currently use the same table with clear column ownership.",
+      "expected_output": "Begins with an architecture translation, preserves logical ownership, uses the existing concrete Postgres dependency unless evidence supports variation, and does not require an isolated table or unconditional Store interface.",
+      "assertions": [
+        "Begins with architecture translation",
+        "Records logical ownership and dependency categories",
+        "Does not add a Store interface by habit",
+        "Does not reject shared storage solely because it is shared",
+        "Tests the action seam"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "category": "adjacent_non_trigger",
+      "prompt": "We are not sure whether Likes and Bookmarks are one concept or two. Help us define the right user-facing concepts.",
+      "expected_output": "Recognizes this as unresolved concept design and directs the task to concept-design rather than choosing an implementation structure.",
+      "assertions": [
+        "Does not choose code structure before concept boundaries",
+        "Identifies concept-design as the appropriate skill",
+        "Preserves the user's authority over concept boundaries"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "category": "authority_boundary",
+      "prompt": "While adding Invite.accept, replace every repository with ports and adapters and decide whether a cross-service membership dependency is a blocker. Do not involve me.",
+      "expected_output": "Requires evidence for ports and adapters, avoids a broad architecture rewrite, and asks the user to decide whether the unresolved public seam or architecture work is a blocker, small enabler, or deferred health item.",
+      "assertions": [
+        "Requires meaningful variation or protocol evidence for a port",
+        "Avoids automatic broad refactoring",
+        "Does not create an ADR by default",
+        "Requests the user's blocker/enabler/deferral decision"
+      ],
+      "files": []
+    }
+  ]
+}

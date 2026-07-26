@@ -7,7 +7,7 @@ description: Test-driven development with red-green-refactor loop. Use when user
 
 ## Philosophy
 
-**Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
+**Core principle**: Tests should verify behavior through agreed public seams, not implementation details. Code can change entirely; tests should not.
 
 **Good tests** are integration-style: they exercise real code paths through public APIs. They describe _what_ the system does, not _how_ it does it. A good test reads like a specification - "user can checkout with valid cart" tells you exactly what capability exists. These tests survive refactors because they don't care about internal structure.
 
@@ -48,14 +48,18 @@ When exploring the codebase, use the project's domain glossary so that test name
 
 Before writing any code:
 
-- [ ] Confirm with user what interface changes are needed
+- [ ] Confirm the intended behavior and its priority with the user
+- [ ] Identify the existing or proposed public seam through which the behavior will be observed
+- [ ] Agree any new public interface before exposing it only for a test
 - [ ] Confirm with user which behaviors to test (prioritize)
 - [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep implementation)
 - [ ] Design interfaces for [testability](interface-design.md)
 - [ ] List the behaviors to test (not implementation steps)
 - [ ] Get user approval on the plan
 
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
+An agreed public seam is a real user-facing entry point, supported module API, CLI, HTTP boundary, or external dependency boundary. Do not export a private helper, add a test-only switch, or mock an internal collaborator merely to make a test convenient. If the only viable seam is private or the behavior is unresolved, stop and propose the smallest credible seam for user approval.
+
+Ask: "What public seam should demonstrate this behavior? Which behaviors are most important to test?"
 
 **You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus testing effort on critical paths and complex logic, not every possible edge case.
 
@@ -98,11 +102,16 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 
 **Never refactor while RED.** Get to GREEN first.
 
+Refactoring is behavior-preserving structure work performed after the agreed tests are green. It may simplify internals, remove duplication, or deepen a module, but it must not add behavior, change an agreed public contract, or broaden scope. Return to planning and a new RED test for those changes.
+
+Refactoring is not a substitute for code review. Keep review findings and proposed follow-up refactors separate from the red-green evidence for the current slice.
+
 ## Checklist Per Cycle
 
 ```
 [ ] Test describes behavior, not implementation
 [ ] Test uses public interface only
+[ ] Public seam was agreed before the test was written
 [ ] Test would survive internal refactor
 [ ] Code is minimal for this test
 [ ] No speculative features added

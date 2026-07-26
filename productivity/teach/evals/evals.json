@@ -1,0 +1,44 @@
+{
+  "skill_name": "teach",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Teach me enough SQL to inspect our analytics data over the next two afternoons. Put the materials in /home/me/learning/sql-pilot. Use the PostgreSQL tutorial and our approved schema guide as sources. I will show understanding by writing and explaining five queries.",
+      "expected_output": "Creates a bounded SQL learning pilot in the learner-selected workspace. It records the mission, two-afternoon bound, named trusted sources, and five-query explanation evidence plan. It offers short source-cited lessons and practices, then records demonstrated work rather than claiming mastery.",
+      "assertions": [
+        "Uses the learner-selected workspace",
+        "Records a single observable mission and its bound",
+        "Records the named trusted sources",
+        "Uses the learner-selected five-query evidence plan",
+        "Keeps the pilot to a bounded number of lesson and practice cycles",
+        "Distinguishes sourced claims from teaching guidance",
+        "Does not claim mastery without learner-produced evidence"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Teach me distributed systems. Pick the best sources, make whatever workspace you want, and keep going until I am an expert.",
+      "expected_output": "Does not start a course. It asks the learner to select a workspace, narrow the mission to an observable bounded outcome, provide trusted sources, and choose learning evidence. It explains that it cannot promise expertise from an unbounded program.",
+      "assertions": [
+        "Requests a learner-selected workspace",
+        "Requests a bounded observable mission",
+        "Requests learner-selected trusted sources",
+        "Requests a learning-evidence choice",
+        "Declines to infer expertise or run an unbounded program"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "What is a SQL JOIN? Give me a short answer with one example.",
+      "expected_output": "Answers the focused question without creating a teaching workspace, learning mission, record, or multi-session program. It may offer the teaching skill only if the user later wants a bounded learning mission.",
+      "assertions": [
+        "Does not create a workspace or learning record",
+        "Does not require a multi-session mission for a short answer",
+        "Keeps any teaching-skill recommendation optional"
+      ],
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "skill_name": "zoom-out",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Zoom out on the export scheduler. I need to understand how it fits into the larger system.",
+      "expected_output": "Produces a layered, evidence-backed read-only map from observed behavior to entry points, modules, dependencies, callers, tests, unknowns, and a next question.",
+      "assertions": [
+        "Triggers for unfamiliar-system orientation",
+        "Uses domain docs and ADRs when relevant",
+        "Cites evidence for asserted relationships",
+        "Separates observed facts from inferences"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Fix the export scheduler bug and add a regression test.",
+      "expected_output": "Does not use the read-only mapping method as an implementation workflow; it identifies this as debugging or implementation work.",
+      "assertions": [
+        "Does not trigger for a request to modify code",
+        "Does not present a system map as a bug fix"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Map the billing subsystem and refactor the modules you think are wrong.",
+      "expected_output": "Maps the requested scope with evidence, labels unknowns and conflicting evidence, and does not edit, refactor, create tickets, or run mutating commands.",
+      "assertions": [
+        "Maintains a read-only boundary even when asked to refactor",
+        "Stops or narrows scope when it cannot map honestly",
+        "Reports a next question rather than taking corrective action"
+      ],
+      "files": []
+    }
+  ]
+}

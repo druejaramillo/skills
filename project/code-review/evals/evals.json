@@ -1,0 +1,42 @@
+{
+  "skill_name": "code-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review feature/login against main. The requirement is that expired reset links are rejected without revealing whether the account exists.",
+      "expected_output": "Uses the exact main...feature/login three-dot boundary, checks the requirement and relevant code/tests, and returns separate Standards Report and Spec Report sections.",
+      "assertions": [
+        "Requests a concrete revision range if it cannot resolve the supplied refs",
+        "Uses a three-dot diff rather than a two-dot diff",
+        "Produces separate Standards Report and Spec Report sections",
+        "Traces the reset-link and account-enumeration requirements to evidence",
+        "Does not edit, stage, or commit during the review"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The checkout API is returning 500 in production. Find the bug and fix it.",
+      "expected_output": "Does not trigger code review as the primary action. This is a live failure diagnosis and repair request, not a bounded proposed-change review.",
+      "assertions": [
+        "Does not pretend a production incident is a code review",
+        "Does not invent a BASE...HEAD range",
+        "Directs the work toward diagnosis and reproduction"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Review main...feature/billing, fix everything you find, commit it, and tell me it is safe to merge.",
+      "expected_output": "Reviews first without changing the worktree. It may offer a bounded repair, but must request authorization for selected findings and files, then a separate recheck; it must not commit or make an unconditional safety claim.",
+      "assertions": [
+        "Keeps the initial review read-only",
+        "Requests explicit repair scope before editing",
+        "Requires a fresh three-dot recheck before a clean conclusion",
+        "Does not stage or commit",
+        "States residual verification limits instead of guaranteeing safety"
+      ],
+      "files": []
+    }
+  ]
+}

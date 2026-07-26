@@ -39,8 +39,8 @@ Optional supporting sections may follow the canonical five:
 notes
 invariants
 non-goals
-synchronizations
-implementation hints
+implementation projection
+synchronization/coupling ledger
 open questions
 ```
 
@@ -172,9 +172,9 @@ A good OP:
 
 ## Working Mode
 
-Use two phases.
+Concept work is standalone; it does not depend on a prescribed workflow or an implementation phase. Discover only what is needed to make a sound concept decision, then prescribe the concept.
 
-### Phase 1: Socratic Discovery
+### Socratic Discovery
 
 Ask focused questions only when they will materially change the concept. Good questions:
 
@@ -190,7 +190,7 @@ Ask focused questions only when they will materially change the concept. Good qu
 
 Do not ask for information already implied by the codebase, existing docs, or the user's prompt. If the user asks you to proceed, make reasonable assumptions and list them.
 
-### Phase 2: Strong Prescription
+### Strong Prescription
 
 Once enough context exists, stop asking broad questions and produce the best spec. Be opinionated. Identify weak concepts and prescribe changes. Use language like:
 
@@ -216,7 +216,7 @@ Once enough context exists, stop asking broad questions and produce the best spe
 9. Check end-to-end completeness: the OP should show value, not merely state mutation.
 10. Check specificity: one concept should serve one purpose.
 11. Check integrity: the concept should not violate its own behavior when composed.
-12. Add optional notes only if they help implementation or future audit.
+12. Add an implementation projection or synchronization/coupling ledger only when it resolves a consequential realization or composition decision.
 
 ---
 
@@ -333,13 +333,64 @@ Show **before and after** when applying a design move.
 
 Concepts are composed by synchronization, not by calling each other. A synchronization says: "when action A happens in concept C1, action B happens in concept C2." Synchronizations live outside the concepts themselves — in an app layer.
 
-When writing concept specs, note any synchronizations required for concepts to work together. Format:
+When writing concept specs, note any consequential synchronizations required for concepts to work together in the named synchronization/coupling ledger. Format:
 
 ```
-sync: when ConceptA.actionX(args), ConceptB.actionY(args)
+sync SyncName: when ConceptA.actionX(args), ConceptB.actionY(args)
 ```
 
 Over-synchronization (automation that removes user control) and under-synchronization (user must manually coordinate what should be automatic) are both design flaws at the composition level, not the concept level.
+
+---
+
+## Optional Implementation Projection
+
+An implementation projection connects an approved concept to a likely code realization without treating packages, tables, or framework conventions as concept semantics. Include it only when implementation shape, a public seam, or a dependency choice would otherwise be ambiguous. It is not a full architecture scan, a mandatory adapter/port design, or a required document.
+
+Use this optional section after the canonical five:
+
+```
+implementation projection
+  module responsibility
+    Label owns category definition and assignment behavior; it does not own item behavior
+  public action seams
+    create, assign, remove, find
+  hidden realization
+    indexes, persistence mapping, and request transport do not alter Label semantics
+  dependency choices
+    Item is an opaque identity; no Label behavior requires an Item module dependency
+  test seams
+    action traces for Label; composed trace only through named synchronizations
+```
+
+State the logical owner of behavior and invariants. Physical co-location may be a valid realization; do not infer conceptual ownership from a table, class, package, or deployment boundary alone. Keep external type parameters opaque unless the concept explicitly requires a user-visible relationship.
+
+## Optional Synchronization/Coupling Ledger
+
+Use a named ledger when concepts are coupled by a consequential synchronization, shared logical state rule, external dependency, consistency choice, or test seam. Do not add it for incidental implementation details. Each synchronization must be named so reviewers can discuss and test its behavior as a unit.
+
+```
+synchronization/coupling ledger
+  sync AcceptInviteAndAddMembership
+    trigger: Invite.accept succeeds
+    participants: Invite.accept; Membership.add
+    state ownership: Invite owns invitation status; Membership owns membership state
+    consistency: atomic in the application boundary
+    retry owner: synchronization runner records and retries a transient Membership failure
+    forbidden bypass: no caller marks an invite accepted and writes membership state directly
+    test seam: accept through AcceptInviteAndAddMembership, then observe membership
+
+  dependency TargetIdentity
+    kind: opaque external identity
+    direction: Invite records TargetIdentity; it does not inspect or mutate target state
+    reason: an invitation must identify its target without depending on target behavior
+```
+
+For every named synchronization, record the trigger, participating actions, logical state ownership, consistency expectation, retry owner when retries exist, forbidden bypass path, and test seam. For every consequential dependency, record its direction, kind, and reason. If a user purpose, ownership rule, or synchronization behavior is unresolved, stop and ask for that decision rather than encode it as an implementation assumption.
+
+## Authority Boundary
+
+The user approves concept boundaries and consequential synchronization semantics. Recommend splits, merges, ownership, and synchronization choices with reasons, but do not silently redefine a user purpose or decide an unresolved ownership or retry policy. Do not create ADRs, design documents, or implementation artifacts merely to record a concept decision; provide the optional projection or ledger in the requested output when useful.
 
 ---
 
@@ -369,8 +420,8 @@ When combining DDD with concept design:
 1. Assumptions
 2. Concept spec
 3. Why this is a concept (criteria check)
-4. Possible synchronizations
-5. Implementation notes
+4. Synchronization/coupling ledger, only for consequential composition
+5. Implementation projection, only when requested or needed to resolve realization ambiguity
 6. Open questions, only if necessary
 
 ### Edited concept
@@ -381,10 +432,10 @@ When combining DDD with concept design:
 
 ### Concept set
 1. Concept inventory
-2. Dependency/dependence notes
-3. Synchronization notes
+2. Coupling and explanation-order notes
+3. Named synchronization/coupling ledger, if needed
 4. Specs for each concept
-5. Suggested build order
+5. Optional implementation projections for decisions that need them
 
 ### Design move application
 Show the original concept, then the result of the move, then any synchronizations needed to compose the new concepts.

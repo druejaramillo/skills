@@ -1,0 +1,18 @@
+{
+  "skill_name": "pptx",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Update this customer deck while preserving the template's speaker notes and animations, then give me screenshots for review.",
+      "expected_output": "Should state that the bundled skill does not provide template-editing or OOXML manipulation scripts. It should recommend making a copy, inspecting the presentation with tools available in the project environment, confirming that those tools preserve speaker notes and animations, and rendering the resulting deck for visual QA. It should not direct the user to nonexistent bundled files or scripts.",
+      "assertions": [
+        "States the template-editing limitation",
+        "Recommends making a copy before editing",
+        "Requires verification of speaker-note and animation preservation",
+        "Requires rendered visual QA",
+        "Does not cite nonexistent bundled files or scripts"
+      ],
+      "files": []
+    }
+  ]
+}

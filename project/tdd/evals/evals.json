@@ -1,0 +1,39 @@
+{
+  "skill_name": "tdd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build the export scheduler with TDD.",
+      "expected_output": "Agrees the intended behavior and a real public seam, then works one observable red-green vertical slice at a time with command evidence.",
+      "assertions": [
+        "Triggers for test-first implementation",
+        "Agrees a public seam before writing a test",
+        "Uses one red-green vertical slice at a time",
+        "Tests observable behavior rather than internal collaborators"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Map how the export scheduler fits into the system.",
+      "expected_output": "Does not begin implementation or tests; it identifies the request as read-only codebase orientation.",
+      "assertions": [
+        "Does not trigger for architecture mapping",
+        "Does not alter code for an orientation request"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Expose a private helper only for a unit test, then rewrite the public API while you refactor.",
+      "expected_output": "Rejects a test-only public seam, asks for agreement on any real public contract, and separates behavior-changing API work from behavior-preserving refactoring.",
+      "assertions": [
+        "Does not create test-only exports",
+        "Stops when no agreed public seam exists",
+        "Does not treat public contract changes as refactoring",
+        "Keeps review and follow-up refactors separate from the current slice"
+      ],
+      "files": []
+    }
+  ]
+}

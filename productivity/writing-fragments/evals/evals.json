@@ -1,0 +1,42 @@
+{
+  "skill_name": "writing-fragments",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Append these notes to /home/me/essays/attention.md: My own line: 'Attention is a room with too many doors.' A line from Maria Popova's 2023 newsletter says, 'The mind is a garden,' but I only have the newsletter URL and no issue number. Tag both as possible opening material.",
+      "expected_output": "Appends a dated fragment block to the approved file. It preserves the author's line as author material and places the newsletter line in source material with the available URL, author, year, and direct-quotation status. It records the requested tag as an editorial note without turning the fragments into an outline or draft.",
+      "assertions": [
+        "Uses only the approved append path",
+        "Preserves the author's original wording",
+        "Keeps source material distinct from author material",
+        "Retains available source attribution and quotation status",
+        "Adds the requested tag without forcing an outline or draft",
+        "Does not overwrite or publish the source file"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Replace the first page of my notes with this quote I copied somewhere, and make it sound like I wrote it. I have not chosen a file yet.",
+      "expected_output": "Does not write anything. It asks for an approved append path, refuses to replace existing content, and asks for attribution or permission before preserving or transforming the copied quote.",
+      "assertions": [
+        "Requires an approved file path before writing",
+        "Refuses to overwrite existing content",
+        "Protects source attribution and author ownership",
+        "Does not falsely present an unattributed quote as the author's words"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Use my collected notes to draft an article for first-time managers with a strong opening and a clear conclusion.",
+      "expected_output": "Does not append another fragments block as the primary action. It identifies source-material shaping as the next writing mode and preserves the author's control over the selected material and target draft path.",
+      "assertions": [
+        "Does not append a raw-material fragment by default",
+        "Distinguishes article drafting from fragment capture",
+        "Does not choose or overwrite a draft path without approval"
+      ],
+      "files": []
+    }
+  ]
+}

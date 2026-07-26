@@ -1,50 +1,42 @@
 ---
 name: pptx
-description: 'Use this skill any time a .pptx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates, layouts, speaker notes, or comments. Trigger whenever the user mentions "deck," "slides," "presentation," or references a .pptx filename, regardless of what they plan to do with the content afterward. If a .pptx file needs to be opened, created, or touched, use this skill.'
-license: Proprietary. LICENSE.txt has complete terms
+description: 'Use when a .pptx file is involved as input or output: plan a deck workflow, extract or review slide content with available local tools, and quality-check a rendered presentation. For programmatic presentation creation, use the bundled pptxgenjs skill. This skill does not bundle template-editing or XML-manipulation scripts.'
 ---
 
 # PPTX Skill
 
-## Quick Reference
+## Scope
 
-| Task                         | Guide                                    |
-| ---------------------------- | ---------------------------------------- |
-| Read/analyze content         | `python -m markitdown presentation.pptx` |
-| Edit or create from template | Read [editing.md](editing.md)            |
-| Create from scratch          | Read [pptxgenjs.md](pptxgenjs.md)        |
+| Task | Approach |
+| --- | --- |
+| Read/analyze content | Use a compatible local extractor, such as `python -m markitdown presentation.pptx`, if installed. |
+| Edit an existing deck | Inspect the deck and available project tooling first. This skill does not bundle template-editing instructions or scripts. |
+| Create from scratch | Load the sibling `pptxgenjs` skill. |
 
 ---
 
 ## Reading Content
 
 ```bash
-# Text extraction
+# Text extraction, if markitdown is installed
 python -m markitdown presentation.pptx
 
-# Visual overview
-python scripts/thumbnail.py presentation.pptx
-
-# Raw XML
-python scripts/office/unpack.py presentation.pptx unpacked/
+# Raw OOXML inspection
+unzip presentation.pptx -d unpacked/
 ```
 
 ---
 
-## Editing Workflow
+## Working with Existing Decks
 
-**Read [editing.md](editing.md) for full details.**
+This directory does not include template-editing guidance, OOXML manipulation scripts, or parsing assets. Before changing an existing deck:
 
-1. Analyze template with `thumbnail.py`
-2. Unpack → manipulate slides → edit content → clean → pack
+1. Make a copy of the source file.
+2. Extract and render it using tools available in the project environment.
+3. Confirm that the available tool supports the required operation, such as preserving speaker notes, comments, animations, or the template layout.
+4. Validate the saved output visually and by extracting its text.
 
----
-
-## Creating from Scratch
-
-**Read [pptxgenjs.md](pptxgenjs.md) for full details.**
-
-Use when no template or reference presentation is available.
+For a new, programmatically generated deck, use `pptxgenjs` rather than attempting unsupported XML edits.
 
 ---
 
@@ -150,6 +142,7 @@ Your first render is almost never correct. Approach QA as a bug hunt, not a conf
 ### Content QA
 
 ```bash
+# If markitdown is installed
 python -m markitdown output.pptx
 ```
 
@@ -167,7 +160,7 @@ If grep returns results, fix them before declaring success.
 
 **⚠️ USE SUBAGENTS** — even for 2-3 slides. You've been staring at the code and will see what you expect, not what's there. Subagents have fresh eyes.
 
-Convert slides to images (see [Converting to Images](#converting-to-images)), then use this prompt:
+Convert slides to images with an available renderer, then use this prompt:
 
 ```
 Visually inspect these slides. Assume there are issues — find them.
@@ -212,7 +205,7 @@ Report ALL issues found, including minor ones.
 Convert presentations to individual slide images for visual inspection:
 
 ```bash
-python scripts/office/soffice.py --headless --convert-to pdf output.pptx
+soffice --headless --convert-to pdf --outdir . output.pptx
 pdftoppm -jpeg -r 150 output.pdf slide
 ```
 
@@ -229,7 +222,6 @@ pdftoppm -jpeg -r 150 -f N -l N output.pdf slide-fixed
 ## Dependencies
 
 - `pip install "markitdown[pptx]"` - text extraction
-- `pip install Pillow` - thumbnail grids
 - `npm install -g pptxgenjs` - creating from scratch
-- LibreOffice (`soffice`) - PDF conversion (auto-configured for sandboxed environments via `scripts/office/soffice.py`)
+- LibreOffice (`soffice`) - optional PDF conversion
 - Poppler (`pdftoppm`) - PDF to images

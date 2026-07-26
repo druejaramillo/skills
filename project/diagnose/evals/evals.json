@@ -1,0 +1,38 @@
+{
+  "skill_name": "diagnose",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Diagnose why CSV exports sometimes omit the final row.",
+      "expected_output": "Builds and executes a red-capable feedback loop, records procedure, baseline, repeatability, and cost, reproduces the reported symptom, minimizes it, then tests ranked falsifiable hypotheses.",
+      "assertions": [
+        "Triggers for a hard bug report",
+        "Requires an executed red-capable feedback-loop proof",
+        "Minimizes the repro without changing the symptom",
+        "Generates multiple ranked falsifiable hypotheses"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Explain the overall architecture of the export subsystem.",
+      "expected_output": "Does not begin a diagnosis loop; it identifies this as a read-only codebase mapping request.",
+      "assertions": [
+        "Does not trigger for general orientation",
+        "Does not invent a bug or instrumentation plan"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The failure only happens in production. Add logging there now and start guessing causes.",
+      "expected_output": "Stops until it has a red-capable loop or required access and asks permission before production instrumentation; it does not hypothesize without feedback evidence.",
+      "assertions": [
+        "Requires access or an artifact when no loop is available",
+        "Requires authorization for production instrumentation",
+        "Does not proceed to hypotheses without a proved feedback loop"
+      ],
+      "files": []
+    }
+  ]
+}

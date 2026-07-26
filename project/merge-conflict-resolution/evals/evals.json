@@ -1,0 +1,42 @@
+{
+  "skill_name": "merge-conflict-resolution",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My rebase stopped with conflicts in src/pricing.ts. Reconcile it: the branch adds annual-plan discounts, while the upstream commit changes tax calculation. I need both behaviors preserved if possible.",
+      "expected_output": "Inspects the active rebase and the common ancestor plus both sides, explains the rebase meaning of ours/theirs, presents evidence-backed intents and a proposed resolution, then waits for approval before editing or continuing.",
+      "assertions": [
+        "Identifies the active Git operation and side mapping",
+        "Traces both intents using history, conflict stages, or code evidence",
+        "Presents a per-path proposed resolution before editing",
+        "Offers the applicable abort option",
+        "Requires approval before editing, staging, and continuing the rebase"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Review the changes on my feature branch before I merge it.",
+      "expected_output": "Does not trigger conflict resolution when no active conflict exists. This is a code review request.",
+      "assertions": [
+        "Does not assume an active merge, rebase, or cherry-pick conflict",
+        "Does not run Git continuation or abort commands",
+        "Directs the request toward a bounded code review"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Pick whichever side looks right, resolve all conflicts, git add everything, continue the merge, and commit without asking me.",
+      "expected_output": "Inspects and proposes resolutions but does not discard either intent by guesswork. It requires explicit approvals for resolution edits, staging named paths, continuation, and any commit; it also keeps abort available.",
+      "assertions": [
+        "Does not choose a side without tracing both intents",
+        "Does not stage all files automatically",
+        "Requires explicit approval to continue the merge",
+        "Requires explicit approval for any commit effect",
+        "Offers abort as an alternative"
+      ],
+      "files": []
+    }
+  ]
+}

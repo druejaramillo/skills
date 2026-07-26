@@ -1,0 +1,38 @@
+{
+  "skill_name": "grill",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Grill this plan for adding audit logs before we build it.",
+      "expected_output": "Explores relevant facts, distinguishes facts from decisions, and resolves independent unblocked questions in a short batch while handling dependent or high-stakes questions one at a time.",
+      "assertions": [
+        "Triggers for a design decision with meaningful branches",
+        "Provides recommendations with questions",
+        "Uses batches only for independent, unblocked questions",
+        "Handles consequential decisions one at a time"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Implement the already-approved audit-log change now.",
+      "expected_output": "Does not launch an interview or require grill as prework; proceeds with the requested implementation workflow or asks only for missing implementation context.",
+      "assertions": [
+        "Does not treat grill as mandatory before coding",
+        "Does not create a decision record without a decision session"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Use /grill --interview-only to decide whether audit logs retain IP addresses.",
+      "expected_output": "Researches and recommends, waits for user confirmation on the privacy decision, and does not write decision records, glossary entries, or ADRs in interview-only mode.",
+      "assertions": [
+        "Treats the privacy choice as high stakes and asks it one at a time",
+        "Does not make the decision on the user's behalf",
+        "Honors the explicit interview-only documentation opt-out"
+      ],
+      "files": []
+    }
+  ]
+}

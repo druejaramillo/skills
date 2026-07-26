@@ -1,0 +1,19 @@
+{
+  "skill_name": "creative-director",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Develop three campaign concepts for a refillable cleaning-product brand. The audience is apartment renters who dislike waste but think refill systems are inconvenient. The goal is to increase first purchases this quarter.",
+      "expected_output": "Should begin with the intake and insight phases before ideation. Should identify the audience tension, formulate HMW prompts, use multiple ideation methods, and give each concept a concise explanation tied to the insight. It should evaluate the ideas against brief fit, originality, emotional response, feasibility, scalability, and simplicity. It should not present unsupported awards-calibrated scores as facts.",
+      "assertions": [
+        "Identifies the renter convenience-versus-waste tension",
+        "Uses intake, insight, and ideation phases in order",
+        "Applies multiple ideation methods",
+        "Ties concepts to a stated insight",
+        "Evaluates concepts against the stated criteria",
+        "Qualifies subjective scores as its own assessment"
+      ],
+      "files": []
+    }
+  ]
+}

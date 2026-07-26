@@ -412,7 +412,7 @@ For larger datasets, use external CSV files:
 Run the overflow check script to verify charts don't overflow:
 
 ```bash
-node scripts/check-overflow.js presentation.html
+node <path-to-skill>/scripts/check-overflow.js presentation.html
 ```
 
 ## Tips

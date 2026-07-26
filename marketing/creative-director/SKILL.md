@@ -57,7 +57,7 @@ A Big Idea for shelf talkers = waste of resources. An Execution Idea for rebrand
 
 ### Phase 2: INSIGHT (insight discovery)
 
-Load: `[[references/insight-mining.md]]`
+Load [insight-mining.md](references/insight-mining.md).
 
 Sequence:
 
@@ -78,13 +78,13 @@ Sequence:
 
 ### Phase 3: IDEATION (idea generation)
 
-Load: `[[references/methods-catalog.md]]` + `[[references/method-selection-matrix.md]]`
+Load [methods-catalog.md](references/methods-catalog.md) and [method-selection-matrix.md](references/method-selection-matrix.md).
 
-For storytelling tasks additionally: `[[references/storytelling-frameworks.md]]`
+For storytelling tasks, also load [storytelling-frameworks.md](references/storytelling-frameworks.md).
 
 **Algorithm:**
 
-1. Using `method-selection-matrix.md]]`, select 3 methods from different categories:
+1. Using `method-selection-matrix.md`, select 3 methods from different categories:
    - One structural (SIT, SCAMPER, TRIZ, Morphological)
    - One association/collision (Bisociation, Random Entry, Synectics, Forced Connections)
    - One inversion/perturbation (Reverse Brainstorming, Worst Idea, Provocation PO, Oblique Strategies)
@@ -101,7 +101,7 @@ For storytelling tasks additionally: `[[references/storytelling-frameworks.md]]`
 
 ### Phase 4: EVALUATE + REFINE (recursive cycle)
 
-Load: `[[references/scoring-calibration.md]]` + `[[references/creative-constitution.md]]`
+Load [scoring-calibration.md](references/scoring-calibration.md) and [creative-constitution.md](references/creative-constitution.md).
 
 #### PASS 0: Idea Level Check
 
@@ -169,7 +169,7 @@ Diagnostics: for each of the top 3, answer "why isn't this a 9?"
 For each of the top 3:
 1. Identify weak criteria (below 8)
 2. Apply specific improvements to weak areas
-3. Use a DIFFERENT method from `[[references/methods-catalog.md]]` (rotation is mandatory)
+3. Use a DIFFERENT method from [methods-catalog.md](references/methods-catalog.md) (rotation is mandatory)
 4. Recalculate Score and HumanKind
 5. If delta < 0.3 per pass, the idea has plateaued
 
@@ -190,9 +190,9 @@ For each of the top 3:
 
 ### Phase 5: ARTICULATE (final output)
 
-Load: `[[assets/output-templates.md]]`
+Load [output-templates.md](assets/output-templates.md).
 
-Final deliverable using the template from `[[assets/output-templates.md]]`. Format depends on the request:
+Use the template in [output-templates.md](assets/output-templates.md). Format depends on the request:
 - Full cycle → **Top-3 Presentation Format**
 - One idea in detail → **Creative Concept One-Pager**
 - Strategic platform → **Campaign Platform**
@@ -202,7 +202,7 @@ Final deliverable using the template from `[[assets/output-templates.md]]`. Form
 
 ## Creative Constitution (short form)
 
-12 evaluation principles. Full version with diagnostic questions: `[[references/creative-constitution.md]]`
+12 evaluation principles. The full version with diagnostic questions is in [creative-constitution.md](references/creative-constitution.md).
 
 **Layer 1: Compliance (pass/fail)**
 1. The idea can be formulated in one sentence
@@ -313,13 +313,13 @@ For each:
 
 ## References
 
-- **[[references/methods-catalog.md]]** — 20+ methods as actionable cards: SIT, TRIZ, SCAMPER, Bisociation, Synectics, Oblique Strategies, Morphological Analysis, and more
-- **[[references/method-selection-matrix.md]]** — routing: task type → recommended method triplet, rotation rules between passes
-- **[[references/scoring-calibration.md]]** — detailed rubric for each score (1-10) per criterion with examples, three calibration systems, multi-perspective panel
-- **[[references/creative-constitution.md]]** — full 3-layer critique constitution: compliance (pass/fail) + excellence (scored) + scalability, feedback rules
-- **[[references/storytelling-frameworks.md]]** — 6 narrative frameworks as implementation cards: Story Spine, Sparkline, Freytag, Monroe, Pixar Rules, Hero's Journey
-- **[[references/insight-mining.md]]** — Mark Pollard Four Points, JTBD, Tension Spotting, Abstraction Laddering, HMW, Assumption Mapping
-- **[[assets/output-templates.md]]** — templates: Creative Concept One-Pager, Top-3 Presentation, Campaign Platform, Quick Brief Response
+- [methods-catalog.md](references/methods-catalog.md): 20+ methods as actionable cards: SIT, TRIZ, SCAMPER, Bisociation, Synectics, Oblique Strategies, Morphological Analysis, and more
+- [method-selection-matrix.md](references/method-selection-matrix.md): task type to recommended method triplet, plus rotation rules between passes
+- [scoring-calibration.md](references/scoring-calibration.md): detailed rubric for each score (1-10) per criterion with examples, three calibration systems, and a multi-perspective panel
+- [creative-constitution.md](references/creative-constitution.md): full 3-layer critique constitution: compliance (pass/fail), excellence (scored), scalability, and feedback rules
+- [storytelling-frameworks.md](references/storytelling-frameworks.md): 6 narrative frameworks as implementation cards: Story Spine, Sparkline, Freytag, Monroe, Pixar Rules, Hero's Journey
+- [insight-mining.md](references/insight-mining.md): Mark Pollard Four Points, JTBD, Tension Spotting, Abstraction Laddering, HMW, Assumption Mapping
+- [output-templates.md](assets/output-templates.md): templates for a Creative Concept One-Pager, Top-3 Presentation, Campaign Platform, and Quick Brief Response
 
 ## Examples
 

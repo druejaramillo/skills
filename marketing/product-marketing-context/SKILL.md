@@ -228,7 +228,7 @@ After gathering information, create `.agents/product-marketing-context.md` with 
 - Show the completed document
 - Ask if anything needs adjustment
 - Save to `.agents/product-marketing-context.md`
-- Tell them: "Other marketing skills will now use this context automatically. Run `/product-marketing-context` anytime to update it."
+- Tell them: "Other marketing skills will now use this context automatically. Load `product-marketing-context` anytime to update it."
 
 ---
 

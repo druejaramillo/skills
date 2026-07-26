@@ -1,0 +1,43 @@
+{
+  "skill_name": "edit-article",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Edit this article for clarity. Defaults are fine. It has headings Introduction, Background, and Recommendation.",
+      "expected_output": "Uses the default configuration without asking the individual style questions. It identifies the heading-based sections, considers their dependency order, and asks the user to confirm the order before rewriting. It then presents one rewritten section at a time for approval and offers a final flow pass after all sections are approved.",
+      "assertions": [
+        "Accepts defaults without individual configuration questions",
+        "Divides the article by headings",
+        "Confirms section order before rewriting",
+        "Presents each rewritten section for approval before continuing",
+        "Preserves technical accuracy and author intent",
+        "Offers a final pass for transitions, opening and closing, and terminology"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Revise my article, but I want to configure it. Make the audience senior engineers. Also, add a claim that the approach cuts costs by 80%.",
+      "expected_output": "Asks the configuration questions one at a time with defaults, confirms the complete configuration, and does not introduce the unsupported 80% cost claim. It waits for section-order confirmation before rewriting.",
+      "assertions": [
+        "Asks configuration questions one at a time when configuration is requested",
+        "Provides a default for each configuration question",
+        "Confirms the full configuration before continuing",
+        "Does not introduce unsupported claims",
+        "Waits for section-order approval before rewriting"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have interviews, notes, and a survey. Write my first article for new managers from this material.",
+      "expected_output": "Does not begin editing an article that does not yet exist. It identifies source-material shaping as the fitting writing mode and keeps the author in control of audience, claims, and the approved target path.",
+      "assertions": [
+        "Does not pretend raw material is an existing article draft",
+        "Distinguishes article shaping from article editing",
+        "Does not choose a target path or fabricate unsupported claims"
+      ],
+      "files": []
+    }
+  ]
+}

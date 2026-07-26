@@ -29,7 +29,7 @@ None — can start immediately.
 
 - **ID**: auto-incremented (`ISSUE-001`, `ISSUE-002`, …). Read the file to find the highest existing ID before creating a new one.
 - **Category**: `bug` or `enhancement`
-- **State**: one of `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`
+- **State**: one of `needs-triage`, `needs-info`, `planned`, `wontfix`
 
 ## When a skill says "publish to the issue tracker"
 
@@ -44,7 +44,7 @@ Read `ISSUES.md` and find the block whose ID or title matches what the user pass
 Edit the header line of the matching issue in-place:
 
 ```
-## [ISSUE-001] · enhancement · needs-triage   →   ## [ISSUE-001] · enhancement · ready-for-agent
+## [ISSUE-001] · enhancement · needs-triage   →   ## [ISSUE-001] · enhancement · planned
 ```
 
 ## When a skill says "comment on an issue"

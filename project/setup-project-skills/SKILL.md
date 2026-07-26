@@ -1,6 +1,6 @@
 ---
 name: setup-project-skills
-description: Sets up an `## Agent skills` block in CLAUDE.md/AGENTS.md and `docs/agents/` so the engineering skills know this repo's issue tracker (GitHub, local markdown, or ISSUES.md), triage label vocabulary, and domain doc layout. Run before first use of `to-issues`, `to-prd`, `triage`, `diagnose`, `tdd`, or `zoom-out` — or if those skills appear to be missing context about the issue tracker, triage labels, or domain docs.
+description: Sets up an `## Agent skills` block in CLAUDE.md/AGENTS.md and `docs/agents/` so engineering skills know this repo's issue tracker, neutral triage states, and domain-document layout. Use for explicit first-time setup or when these conventions are missing.
 ---
 
 # Setup Drue's Skills
@@ -8,10 +8,10 @@ description: Sets up an `## Agent skills` block in CLAUDE.md/AGENTS.md and `docs
 Scaffold the per-repo configuration that the engineering skills assume:
 
 - **Issue tracker** — where issues live (GitHub, local markdown `.scratch/`, or flat `ISSUES.md`)
-- **Triage labels** — the strings used for the five canonical triage roles
+- **Triage states** — the strings used for neutral workflow states
 - **Domain docs** — where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
 
-This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm, then write.
+This is a prompt-driven skill, not a deterministic script. It is explicit setup only: other skills may point out missing configuration but must not silently invoke it. Explore, present what you found, obtain approval, then write.
 
 ## Process
 
@@ -26,6 +26,8 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `docs/agents/` — does prior output from this skill already exist?
 - `.scratch/` — sign that a local-markdown issue tracker convention is already in use
 - `ISSUES.md` — sign that the flat file tracker is already in use
+- Existing issue and PR templates, labels, milestones, and status fields. For GitHub repositories, inspect existing labels and a representative issue before proposing new vocabulary.
+- Monorepo boundaries, workspace documentation, and tracker references in existing instructions. Do not assume root-level docs apply to every workspace.
 
 ### 2. Present findings and ask
 
@@ -44,19 +46,18 @@ Choices:
 - **ISSUES.md** — a single flat file at the repo root. Best for projects that don't need a full tracker. This is the default fallback if no remote is detected.
 - **Other** (Jira, Linear, etc.) — ask the user to describe the workflow; record it as freeform prose
 
-**Section B — Triage label vocabulary.**
+**Section B — Triage state vocabulary.**
 
-> Explainer: The `triage` skill moves issues through a state machine and needs to apply labels (or equivalent) that match strings you've actually configured. If your tracker uses different names (e.g. `bug:triage` instead of `needs-triage`), map them here.
+> Explainer: The `triage` skill records an issue's workflow state. These states describe the condition of the work, not who should implement it. Map the canonical names below to labels, fields, or header values your tracker actually uses.
 
-The five canonical roles:
+The four canonical states:
 
 - `needs-triage` — maintainer needs to evaluate
 - `needs-info` — waiting on reporter
-- `ready-for-agent` — fully specified, AFK-ready
-- `ready-for-human` — needs human implementation
+- `planned` — accepted and sufficiently understood for scheduling
 - `wontfix` — will not be actioned
 
-Default: each role's string equals its canonical name. For `ISSUES.md` trackers, these appear in the issue header line and don't require any external configuration — defaults are always fine.
+Default: each state's string equals its canonical name. For `ISSUES.md` trackers, these appear in the issue header line and do not require external configuration. If the tracker has no state mechanism, record that explicitly rather than inventing labels.
 
 **Section C — Domain docs.**
 
@@ -72,7 +73,7 @@ Show the user a draft of:
 - The `## Agent skills` block to add to `CLAUDE.md` or `AGENTS.md`
 - The contents of `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`
 
-Let them edit before writing.
+Let them edit before writing. Do not create labels, alter tracker settings, or write repository files until the user approves this draft.
 
 ### 4. Write
 
@@ -95,9 +96,9 @@ The block:
 
 [one-line summary of where issues are tracked]. See `docs/agents/issue-tracker.md`.
 
-### Triage labels
+### Triage states
 
-[one-line summary of the label vocabulary]. See `docs/agents/triage-labels.md`.
+[one-line summary of the neutral state vocabulary]. See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
@@ -114,6 +115,8 @@ Then write the three docs files using the seed templates in this skill folder as
 
 For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch using the user's description.
 
-### 5. Done
+### 5. Verify and finish
 
-Tell the user the setup is complete and which skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later — re-running this skill is only necessary to switch issue trackers or restart from scratch.
+Re-read every generated file. Verify documented paths exist or are intentionally created, commands match the selected tracker, and the `## Agent skills` block appears exactly once.
+
+Tell the user which skills will read the configuration. They can edit `docs/agents/*.md` directly later; re-run setup only to switch tracker conventions or restart from scratch.

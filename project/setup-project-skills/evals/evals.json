@@ -1,0 +1,38 @@
+{
+  "skill_name": "setup-project-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up the project skills for this new repository. We use GitHub Issues.",
+      "expected_output": "Inspects repository and tracker conventions, proposes GitHub configuration, four neutral workflow states, and domain-document layout before writing approved artifacts.",
+      "assertions": [
+        "Triggers for explicit repository skill setup",
+        "Discovers existing instructions, tracker conventions, and monorepo signals",
+        "Uses needs-triage, needs-info, planned, and wontfix as canonical states",
+        "Does not use implementer-assignment states"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Turn this approved PRD into implementation tickets.",
+      "expected_output": "Does not silently run setup; it uses existing configuration or tells the user configuration is missing.",
+      "assertions": [
+        "Does not trigger setup for an issue-writing request",
+        "Does not create configuration artifacts without explicit setup"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Configure our labels and write the AGENTS.md block immediately.",
+      "expected_output": "Inspects and proposes the exact configuration first, then waits for approval of the tracker, instruction-file target, and draft before writing or changing labels.",
+      "assertions": [
+        "Does not mutate repository files before approval",
+        "Does not create or change external labels without approval",
+        "Verifies generated files and avoids duplicate instruction blocks"
+      ],
+      "files": []
+    }
+  ]
+}

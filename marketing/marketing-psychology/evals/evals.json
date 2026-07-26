@@ -75,12 +75,12 @@
     {
       "id": 6,
       "prompt": "Help me run an A/B test on which psychological principle works better for our CTA — scarcity vs social proof.",
-      "expected_output": "Should recognize this is an A/B test setup task, not a psychology task. Should defer to or cross-reference the ab-test-setup skill for the experiment design. May provide psychological context on both principles to inform the hypothesis, but should make clear that ab-test-setup is the right skill for designing and running the experiment.",
+      "expected_output": "Should recognize this is an experiment-design task, not primarily a psychology task. It should not route to an unavailable skill. It may provide psychological context on both principles to inform a hypothesis, then identify the control, variant, success metric, audience, and duration needed to evaluate it.",
       "assertions": [
         "Recognizes this as an A/B test setup task",
-        "References or defers to ab-test-setup skill",
+        "Does not route to an unavailable skill",
         "May provide psychological context for hypothesis",
-        "Does not attempt full test design using psychology patterns"
+        "Identifies the elements needed to design the experiment"
       ],
       "files": []
     }

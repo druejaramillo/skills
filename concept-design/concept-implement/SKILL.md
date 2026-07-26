@@ -1,516 +1,147 @@
 ---
 name: concept-implement
-description: Translate concept design specs into working code or structure a codebase around concepts and synchronizations. Use when implementing a concept, mapping its state model to modules or database schemas, preserving concept independence, creating APIs and tests from specs, refactoring code toward concepts, or implementing the synchronization layer between concepts. Uses Go examples unless another language is specified.
+description: Translate an approved concept or named synchronization into working code while preserving semantic ownership. Use when implementing a concept, mapping its state model to modules or schemas, choosing dependencies and seams from evidence, creating APIs and tests from specs, refactoring code toward concepts, or implementing the synchronization layer between concepts. Uses Go examples unless another language is specified.
 ---
 
 # Concept Implementation
 
-This skill translates concept design specs into code. The core principle: modularity in the design maps directly to modularity in the code. Each concept becomes an independent module that owns its own state and exposes its actions as functions. Concepts never call each other. All cross-concept coordination lives in a separate synchronization layer.
+This skill translates concept design specs into code. Conceptual independence maps to clear **logical ownership** and action seams in code, not automatically to one package, interface, table, or deployment unit per concept. A concept owns its behavior and invariants; named synchronizations own composed behavior. Do not hide cross-concept mutations inside a concept action.
 
----
-
-## The Architecture
+## Conceptual Direction
 
 ```
-┌──────────────────────────────────────────────┐
-│            Synchronization Layer              │
-│  (route handlers, app services, mediators)    │
-│  - imports concepts                           │
-│  - implements cross-concept logic             │
-│  - no direct concept-to-concept calls         │
-└──────────┬────────────────┬──────────────────┘
-           │                │
-    ┌──────▼──────┐  ┌──────▼──────┐
-    │  Concept A  │  │  Concept B  │
-    │  own state  │  │  own state  │
-    │  own actions│  │  own actions│
-    │  no imports │  │  no imports │
-    │  of B or    │  │  of A or    │
-    │  sync layer │  │  sync layer │
-    └─────────────┘  └─────────────┘
+Synchronization layer
+  - imports concepts
+  - owns cross-concept logic
+  - does not hide that logic inside a concept
+
+Concept A                         Concept B
+  - owns local state                - owns local state
+  - owns local actions              - owns local actions
+  - no hidden mutation of B         - no hidden mutation of A
 ```
+
+This is a semantic direction, not a required folder layout. Translate it into the existing codebase only when logical ownership, public action seams, and synchronization behavior remain clear.
 
 **Concepts:**
-- Own their own persistent state (separate DB collections/tables)
-- Expose actions as functions/methods
-- Accept external types as opaque IDs — never import another concept's types
-- Never call actions from other concepts
+
+- Own their logical state, invariants, and behavior; physical storage may be shared when ownership remains explicit.
+- Expose actions through the smallest public seam the codebase needs.
+- Treat external types as opaque identities at the concept boundary unless an approved spec says otherwise.
+- Do not hide a composed business rule by directly invoking or mutating another concept's owned behavior.
 
 **Synchronization layer:**
-- The only code that imports multiple concepts
-- Implements application-level rules (auth, cascades, automation)
-- Translates incoming requests into concept action sequences
-- Each sync function corresponds to a named synchronization from the design
 
----
+- Owns a named, composed user-facing rule such as authorization, cascades, or automation.
+- Translates incoming requests into concept action sequences.
+- Gives each sync function a corresponding named synchronization from the design.
+- May be an existing use-case service, command handler, event consumer, or other boundary when its consistency and retry behavior are explicit.
 
 ## Implementation Mapping
 
 | Concept spec part | Code artifact |
 |---|---|
 | Concept name | package/module/service/component namespace |
-| Purpose | package doc, service comment, README, ADR note |
-| State | tables, models, structs, schemas, repositories |
+| Purpose | module responsibility and public action seam; comments only where the codebase needs them |
+| State | logical ownership, models, schemas, repositories, and physical storage where relevant |
 | Actions | functions, methods, commands, handlers, endpoints |
 | Action inputs | request DTOs, command structs, function args |
 | Action outputs | response DTOs, result types, events, errors |
 | Failure cases | typed errors, validation errors, blocked actions |
 | Operational principle | integration test, acceptance test, action-trace test |
 | Invariants | constraints, validations, property tests, transaction checks |
-| Synchronization | mediator/workflow/event handler, not direct concept import |
+| Synchronization | named mediator/workflow/event handler with explicit ownership, consistency, and retry behavior |
 
----
-
-## Required Procedure
+## Implementation Procedure
 
 ### 1. Read the Concept Spec
 
-Extract:
-- concept name and type parameters
-- purpose
-- state components
-- actions, success outputs, error outputs
-- operational principle
-- optional invariants or synchronization notes
+Extract the concept name and type parameters, purpose, state components, action success and error outputs, operational principle, and any implementation projection or synchronization/coupling ledger.
 
 If the spec is incomplete, infer conservatively and list assumptions. Do not invent broad behavior beyond the purpose.
 
 ### 2. Identify Existing Architecture
 
-Before editing code, inspect:
-- package/module layout
-- data models, migrations/schema
-- handlers/routes/controllers
-- service/application layer
-- repository/data access layer
-- tests, naming conventions
-- dependency direction, error handling pattern
-- transaction pattern, authorization/policy pattern
+Before editing code, inspect package/module layout, data models and migrations/schema, handlers/routes/controllers, service/application and repository/data-access layers, tests and naming conventions, dependency direction and error handling, and transaction and authorization/policy patterns.
 
-Follow the existing style unless it violates concept independence.
+Follow the existing style unless it obscures logical ownership, bypasses an invariant, or hides a composed rule.
 
-### 3. Choose the Narrowest Implementation Slice
+### 3. Write the Architecture Translation
 
-Implement only what the requested concept/action needs. Preferred order:
+Before selecting files or abstractions, state the smallest translation that makes the approved semantics concrete:
+
+```
+Architecture translation
+- Module responsibility: [which concept behavior and invariants this code owns]
+- Public action seam: [the action/API/command callers use]
+- Hidden realization: [persistence, transport, indexes, framework wiring]
+- Logical state ownership: [state, authorized writers, protected invariants]
+- Dependencies: [dependency -> category -> evidence -> direction]
+- Adapter/port decision: [none, existing seam, or new seam and the meaningful variation it serves]
+- Test seams: [concept action trace and named synchronization trace]
+```
+
+Use categories such as opaque identity, composed concept action, infrastructure, framework, or presentation. Reuse a design-provided synchronization/coupling ledger; do not invent a different synchronization contract in code.
+
+### 4. Choose Dependencies and Seams from Evidence
+
+Start with concrete dependencies and existing action seams when they are local, stable, and have one real implementation. Introduce an adapter, port, repository interface, or additional module boundary only for meaningful variation or an actual protocol boundary: multiple providers or transports; an external service, process, or unstable protocol; independently deployed or changing implementations; an explicit failure, retry, transaction, authorization, or observability boundary; or a public action that must stay stable while its realization changes.
+
+Tests alone do not justify a general interface. Prefer the real local realization, a focused fake, or an existing boundary. Keep an existing interface when it carries a real contract; do not add or remove one mechanically. When evidence is incomplete, choose the simplest reversible implementation and name the uncertainty.
+
+### 5. Choose the Narrowest Implementation Slice
+
+Implement only what the requested concept or action needs, in this order:
+
 1. State/storage needed by the action
 2. Domain/application types
 3. Action implementation
 4. API/handler/CLI entry point, if needed
 5. Synchronization mediator, if needed
-6. Tests from operational principle
-7. Documentation
+6. Tests from the operational principle
 
-Do not implement every possible future action unless requested.
+Update documentation or an ADR only when the user requests it or the codebase's established change process requires it. Do not create either merely to record this translation. Do not implement every possible future action unless requested.
 
-### 4. Preserve Concept Independence
+### 6. Preserve Concept Independence
 
-**Avoid these code smells:**
-- Concept package imports another concept package to mutate its state directly
-- A concept action performs multiple concept purposes
-- API endpoint names hide the concept action
-- Storage schema mixes unrelated concept states without clear ownership
-- Validation for one concept is scattered across another
-- Concept-specific rules live only in UI code
-- Tests verify screens but not action traces
-- "Manager" or "service" code contains several concepts
+Avoid concept packages importing each other to mutate state directly; actions with multiple concept purposes; endpoints that hide the concept action; shared storage with unclear logical owners, writers, or invariant boundaries; concept validation scattered across another concept; rules that live only in UI code; screen-only tests; and "Manager" or "service" code containing several concepts.
 
-**Preferred patterns:**
-- One package/module per concept where practical
-- One action function per concept action
-- Typed command/result structs
-- Repositories scoped to concept state
-- Mediators for cross-concept synchronization
-- Explicit transaction boundary around synchronized actions
-- Tests expressed as "after action A, then action B returns C"
+Prefer one package or module per concept where practical, one action function per concept action, typed command/result structs, concrete local dependencies unless real variation justifies a seam, explicit state owners even with shared records or tables, mediators for cross-concept synchronization, explicit transaction boundaries around synchronized actions, and tests phrased as action traces.
 
----
+## Detailed Reference
 
-## File Structure
-
-```
-/concepts/
-  label/
-    label.go        ← concept: state + actions
-    store.go        ← Store interface
-    store_pg.go     ← Postgres implementation
-  session/
-    session.go
-    store.go
-/app/
-  app.go            ← App struct wiring concepts together
-  sync_auth.go      ← synchronizations for auth flows
-  sync_content.go   ← synchronizations for content flows
-main.go
-```
-
-Or using the `internal/` convention:
-
-```
-internal/
-  invite/
-    invite.go
-    service.go
-    repository.go
-    errors.go
-    service_test.go
-  app/
-    accept_invite_and_add_member.go
-```
-
-Group synchronizations by domain, not by concept. A sync file describes interactions, not any single concept. Name sync functions after the composed behavior, not after one concept (e.g., `AcceptInviteAndAddMember`, `SubscribeAndGrantAccess`).
-
----
-
-## Concept as Go Package
-
-Each concept is a package. The package comment states the purpose.
-
-**Spec:**
-```
-concept Label [Item]
-
-purpose
-  organize and filter items by user-defined categories
-
-state
-  a set of Labels with
-    a name String
-    a owner String
-
-  a set of Assignments with
-    a label Label
-    a item Item
-
-actions
-  create [name: String; owner: String] => [label: Label]
-  create [name: String; owner: String] => [error: String]
-
-  assign [label: Label; item: Item] => []
-  assign [label: Label; item: Item] => [error: String]
-
-  remove [label: Label; item: Item] => []
-
-  find [name: String; owner: String] => [items: set of Item]
-```
-
-**Implementation:**
-```go
-// Package label implements the Label concept: organizing and filtering
-// items by user-defined categories. Items are treated as opaque string IDs.
-package label
-
-import "errors"
-
-type Label struct {
-    ID    string
-    Name  string
-    Owner string
-}
-
-// Store abstracts persistence. The concept doesn't know about Postgres vs Mongo.
-type Store interface {
-    CreateLabel(name, owner string) (Label, error)
-    LabelExists(id string) bool
-    AssignLabel(labelID, itemID string) error
-    RemoveAssignment(labelID, itemID string) error
-    FindItemsByLabel(name, owner string) ([]string, error)
-}
-
-type Concept struct {
-    store Store
-}
-
-func New(store Store) *Concept {
-    return &Concept{store: store}
-}
-
-func (c *Concept) Create(name, owner string) (Label, error) {
-    if name == "" {
-        return Label{}, errors.New("label name cannot be empty")
-    }
-    return c.store.CreateLabel(name, owner)
-}
-
-// Assign associates a label with an item. Item is an opaque ID string —
-// the concept places no constraints on what kind of thing it labels.
-func (c *Concept) Assign(labelID, itemID string) error {
-    if !c.store.LabelExists(labelID) {
-        return errors.New("label not found")
-    }
-    return c.store.AssignLabel(labelID, itemID)
-}
-
-func (c *Concept) Remove(labelID, itemID string) error {
-    return c.store.RemoveAssignment(labelID, itemID)
-}
-
-func (c *Concept) Find(name, owner string) ([]string, error) {
-    return c.store.FindItemsByLabel(name, owner)
-}
-```
-
-Key choices:
-- Items are `string` — the concept doesn't import any "item" type
-- `Store` interface makes persistence pluggable
-- No imports from other concept packages
-- Package comment restates the concept's purpose
-
----
-
-## Translating State to Schema
-
-Each SSF declaration maps to its own collection/table. Never share storage between concepts.
-
-| SSF pattern | DB representation |
-|-------------|-------------------|
-| `a set of X with fields` | Table/collection `X`, one row/doc per object |
-| `a Subset set of X with fields` | Table/collection `Subset`, FK/ref to `X` by ID |
-| `an element Config with fields` | Table/collection `Config`, constrained to one row |
-| Set-valued field `a tags set of String` | Junction table or embedded array |
-| `optional` field | Nullable column or omitted key |
-| Enum `of A or B` | String column with enum constraint |
-
-**SSF → Postgres example:**
-```sql
--- Labels concept
-CREATE TABLE labels (
-    id    TEXT PRIMARY KEY,
-    name  TEXT NOT NULL,
-    owner TEXT NOT NULL
-);
-
--- item_id has no FK — the Label concept doesn't know what table items come from
-CREATE TABLE label_assignments (
-    label_id TEXT NOT NULL REFERENCES labels(id),
-    item_id  TEXT NOT NULL,
-    PRIMARY KEY (label_id, item_id)
-);
-```
-
-**Database rules:**
-- Tables may reference IDs from other concepts but should not require importing behavior from those concepts
-- Store only state needed for the concept's actions
-- Avoid adding fields because they exist in the domain but do not support behavior
-- Use constraints for invariants when possible
-- Avoid shared "status" fields that mean different things for different concepts
-- If two concepts share a table for practical reasons, document ownership of each column
-
----
-
-## Implementing Synchronizations
-
-Synchronizations are functions in the app layer that call multiple concept actions in sequence.
-
-**Synchronization pattern:**
-```
-when ConceptA.actionA(args) occurs
-  and ConceptB.actionB(mappedArgs) can occur
-then perform both atomically
-else block the initial action and return the relevant error
-```
-
-**Code placement:** Put synchronizations in one of:
-- `internal/app`, `internal/workflows`, `internal/sync`, `internal/usecase`
-- Handler/cmd layer, or an event consumer if eventual consistency is acceptable
-
-```go
-// app/sync_tasks.go
-package app
-
-import (
-    "myapp/concepts/label"
-    "myapp/concepts/todo"
-)
-
-type App struct {
-    Labels *label.Concept
-    Todos  *todo.Concept
-}
-
-// CreateTask implements:
-// sync createTask: when Todo.add(name) => task, Label.assign(pending, task.id)
-func (a *App) CreateTask(name string) (*todo.Task, error) {
-    task, err := a.Todos.Add(name)
-    if err != nil {
-        return nil, err
-    }
-    // Automation: new tasks automatically receive the PENDING label.
-    _ = a.Labels.Assign(a.pendingLabelID, task.ID)
-    return task, nil
-}
-
-// CompleteTask implements:
-// sync completeTask: when Todo.complete(t), Label.remove(pending, t), Label.assign(done, t)
-func (a *App) CompleteTask(taskID string) error {
-    if err := a.Todos.Complete(taskID); err != nil {
-        return err
-    }
-    _ = a.Labels.Remove(a.pendingLabelID, taskID)
-    _ = a.Labels.Assign(a.doneLabelID, taskID)
-    return nil
-}
-```
-
-**Rules for sync functions:**
-- Name the function after the user-facing operation, not the internal actions
-- Comment each sync with the design-level intent
-- The sync function is the only place that imports and calls multiple concepts
-- If a sync is transactional, wrap in a DB transaction at the app layer
-
-**When to use synchronization:**
-- One concept action should trigger another concept action
-- Access control or subscription gates another action
-- Accepted invite creates membership
-- Payment success activates subscription
-- Deleted item moves to trash
-- Notification sent after a job completes
-
----
-
-## API Design
-
-Expose concept actions directly where possible.
-
-**Good:**
-```http
-POST /invites
-POST /invites/{token}/accept
-POST /invites/{token}/decline
-```
-
-**Less good:**
-```http
-POST /workspace/member/add-by-email
-```
-
-The second hides the Invite concept and prematurely combines Invite and Membership.
-
----
-
-## Mapping Error Overloads
-
-The spec pattern `=> [error: String]` maps to Go's error return:
-
-| Spec | Go |
-|------|-----|
-| `create [...] => [item: Item]` | `return item, nil` |
-| `create [...] => [error: String]` | `return Item{}, err` |
-| `delete [...] => []` | `return nil` |
-| `find [...] => [results: set of Item]` | `return items, nil` |
-
-**Typed errors** let the sync layer format messages appropriately:
-
-```go
-type NotFoundError struct {
-    Resource string
-    ID       string
-}
-func (e *NotFoundError) Error() string {
-    return fmt.Sprintf("%s %q not found", e.Resource, e.ID)
-}
-
-type ValidationError struct {
-    Field   string
-    Message string
-}
-```
-
-Standard typed errors to define per concept:
-- `ErrNotFound`, `ErrInvalidInput`, `ErrAlreadyExists`, `ErrExpired`
-- `ErrUnauthorized`, `ErrBlocked`, `ErrInvariantViolation`
-
----
-
-## Testing
-
-Every implemented concept needs at least one test derived from the operational principle.
-
-**Test levels:**
-1. **Action unit tests**: call concept actions directly
-2. **State transition tests**: verify state after action traces
-3. **Failure tests**: verify blocked actions and errors
-4. **Synchronization tests**: verify composed behavior is atomic
-5. **API tests**: verify routes map cleanly to actions
-
-**Write test names in concept language:**
-```
-TestInvite_CreateThenAccept
-TestSubscription_SubscribeThenCheckAccess
-TestTrash_DeleteThenRestore
-TestAccess_BlocksUnauthorizedAction
-TestLabel_AssignThenFind
-```
-
----
-
-## Concept Reuse via Multiple Instantiation
-
-A parameterized concept (e.g., `Label [Item]`) can be instantiated multiple times for different target types. Give each instance its own store and DB collection.
-
-```go
-// Two separate instantiations of the same Label concept:
-postLabels    := label.New(label.NewStore(db, "post_label_assignments"))
-commentLabels := label.New(label.NewStore(db, "comment_label_assignments"))
-```
-
----
-
-## Validator Actions
-
-Actions that check state without changing it (e.g., `checkPermission`, `isAuthor`) are still actions. In Go, return an error when the check fails — this lets them chain naturally:
-
-```go
-func (c *Concept) CheckPermission(userID, resource, action string) error {
-    ok, err := c.store.HasPermission(userID, resource, action)
-    if err != nil {
-        return err
-    }
-    if !ok {
-        return &PermissionDeniedError{User: userID, Resource: resource, Action: action}
-    }
-    return nil
-}
-```
-
-In a sync:
-```go
-func (a *App) DeletePost(actorID, postID string) error {
-    if err := a.Roles.CheckPermission(actorID, "post", "delete"); err != nil {
-        return err  // guard — sync aborts here if permission missing
-    }
-    return a.Posts.Delete(postID)
-}
-```
-
----
+Read [implementation patterns and examples](references/implementation-patterns.md) before choosing a package or file projection, mapping SSF state to storage, implementing a named synchronization, defining HTTP or Go error mappings, or writing tests. It contains the Go examples, schema mapping, synchronization rules, API guidance, test patterns, multiple-instantiation guidance, and validator-action examples for those situations.
 
 ## Common Mistakes
 
-**Concepts importing each other**: If `package notification` imports `package user`, that's a coupling violation. Pass user IDs as strings. The concept accepts opaque identifiers, not typed objects from other concept packages.
+**Concepts importing each other to hide behavior:** Do not use a sibling concept package to mutate or inspect another concept's owned behavior. Pass opaque IDs at the concept boundary. A necessary implementation dependency must have an evidence-backed category and preserve the named ownership boundary.
 
-**App logic inside a concept**: Concepts enforce only their own behavioral rules. "Only the author can delete" is a sync-layer concern. The concept's `Delete` action doesn't check authorship — the sync function does.
+**App logic inside a concept:** Concepts enforce only their own behavioral rules. "Only the author can delete" is a sync-layer concern. The concept's `Delete` action does not check authorship; the sync function does.
 
-**Shared state between concepts**: Each concept owns its own tables/collections. If two concepts write to the same table, one of them is doing the other's job.
+**Shared physical state without logical ownership:** Multiple concepts may use one table, record, or transaction. It is a problem when state owner, authorized writers, invariants, or synchronization boundary are unclear, not when storage is merely co-located.
 
-**Sync logic in route handlers**: Keep route handlers thin. Move any multi-concept logic into named sync functions so the intent stays readable.
+**Sync logic in route handlers:** Keep route handlers thin. Move multi-concept logic into named sync functions so the intent stays readable.
 
-**Skipping the Store interface**: Hardcoding DB calls inside the concept makes it harder to test and impossible to swap databases. Always define a `Store` interface, even for simple concepts.
+**Habitual Store interface:** Do not introduce `Store` merely because persistence exists or tests might use a fake. Use a concrete local dependency when there is one realization. Add an interface or adapter only for evidenced variation, protocol adaptation, or a stable public seam; place it at the consuming boundary.
 
-**Implementing every future action**: Only implement what the current spec and request require. Over-building a concept blurs its purpose and creates unused state.
+**Implementing every future action:** Implement only what the current spec and request require. Over-building blurs a concept's purpose and creates unused state.
 
----
+## Authority Boundary
+
+The user approves public seams and decides whether architecture work discovered during implementation is a blocker, a small enabler, or a deferrable health item. Stop when a concept rule, synchronization behavior, ownership decision, or public seam is unresolved. Do not create ADRs, architecture documents, or broad refactor plans by default.
 
 ## Implementation Output Format
 
 When producing code changes, return:
 
-1. Concept implementation summary
-2. Files changed
-3. How each concept action maps to code
-4. How state is stored
-5. How synchronization is handled, if any
-6. Tests added or recommended
-7. Any deviations from the spec
-8. Remaining risks
+1. Architecture translation: module responsibility, public and hidden behavior, logical ownership, dependency categories, adapter/port decision, and concept/synchronization test seams
+2. Concept implementation summary
+3. Files changed
+4. How each concept action maps to code
+5. Physical realization only where it matters to logical ownership or invariants
+6. How named synchronization is handled, including consistency and retry owner, if any
+7. Tests added or recommended
+8. Any deviations from the spec
+9. Remaining risks and decisions for the user
 
 When editing files directly, keep the response shorter and focus on what changed and why.

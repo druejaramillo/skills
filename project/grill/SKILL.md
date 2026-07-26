@@ -1,45 +1,61 @@
 ---
 name: grill
-description: Relentless interview to stress-test a plan or design until every branch of the decision tree is resolved. Optionally updates CONTEXT.md and ADRs as decisions crystallize. Use when user wants to stress-test a plan, get grilled on their design, mentions "grill me", or wants to align with the agent before building.
+description: Resolve meaningful product, design, planning, or architecture decisions through evidence and a focused interview. Records confirmed decisions by default. Use when user wants to stress-test a plan, get grilled on a design, mentions "grill me", or needs to align before building.
 ---
 
 # Grill
 
-Interview the user relentlessly about every aspect of their plan until reaching shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
+Resolve the decisions that materially affect a plan without turning every unknown into a question. Explore facts first, distinguish them from choices, recommend an option, and let the user decide. Do not treat this as mandatory prework for coding or as a substitute for a broader workflow.
 
-Ask questions one at a time. If a question can be answered by exploring the codebase, explore it instead of asking.
+If a question can be answered from the codebase, documentation, or a reliable external source, investigate it rather than asking. Cite the evidence that matters. Stop when evidence conflicts, the scope changes, or a material decision remains unresolved.
 
 ## Invocation
 
-- `/grill` — interview only; no doc updates
-- `/grill --docs` — interview + update `CONTEXT.md` and ADRs inline as decisions crystallize
+- `/grill` records confirmed decisions.
+- `/grill --interview-only` does not create or update durable documentation.
 
-Check the user's invocation and set doc-update mode accordingly before starting.
+Treat an explicit request for an interview-only session as the same opt-out. Do not infer the opt-out from a brief session or from the absence of existing documentation.
 
----
+## Decision Practice
 
-## Doc-update mode (`--docs` only)
+1. Frame the goal, affected users or systems, constraints, and decisions already made. Read relevant `CONTEXT.md`, `CONTEXT-MAP.md`, ADRs, and existing decision records before asking questions.
+2. Build a small decision map. Label each item as a **fact**, **assumption**, **decision**, or **open question**. Facts need evidence; decisions need user confirmation unless the user has already confirmed them in the supplied material.
+3. Resolve questions in the right shape:
+   - Batch independent, unblocked, low-to-moderate-stakes questions. Keep a batch short, give a recommendation for each, and make clear that answers can be given independently.
+   - Ask one question at a time when it depends on an earlier answer, changes scope or public behavior, is costly to reverse, or has material architectural, security, or data consequences.
+   - After an answer is ambiguous, summarize the proposed decision and obtain confirmation before recording it.
+4. Do not ask questions that have no meaningful effect on the selected direction. Do not silently make product, scope, public-behavior, or consequential architecture decisions.
 
-When `--docs` is passed, this session also maintains the project's living documentation. Before the first question, explore the codebase for existing docs:
+## Record Confirmed Decisions
 
-### File structure to look for
+Unless interview-only mode is active, record each confirmed decision as it crystallizes. Prefer an existing repository decision-record convention. Otherwise create or append a focused record at `docs/decisions/YYYY-MM-DD-<topic>.md`.
 
-Single-context repo (most repos):
+Each entry contains:
 
+```markdown
+## Decision: <short title>
+
+**Status:** Confirmed
+**Source:** User confirmation on YYYY-MM-DD, plus relevant evidence
+
+### Context
+
+Why this decision was needed.
+
+### Decision
+
+What was chosen.
+
+### Consequences
+
+What this enables, constrains, or deliberately excludes.
 ```
-/
-├── CONTEXT.md
-├── docs/adr/
-│   ├── 0001-event-sourced-orders.md
-│   └── 0002-another-decision.md
-└── src/
-```
 
-If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The map points to where each one lives.
+Record decisions, not a transcript. Do not write assumptions as decisions. At the end, re-read the record and confirm it accurately reflects the user's choice.
 
-### CONTEXT.md — shared domain glossary
+### Domain glossary
 
-As terminology gets resolved during the interview, update `CONTEXT.md` with new or refined terms. Each entry:
+Add or refine `CONTEXT.md` only for genuinely domain-specific terminology that was resolved:
 
 ```markdown
 ## term-name
@@ -49,36 +65,16 @@ One-sentence definition. What it is, not what it does.
 **Avoid:** synonym-to-avoid, another-synonym
 ```
 
-Only add terms that are *genuinely domain-specific* — not generic programming concepts. Prefer precision over volume. If a term is still fuzzy at the end of the session, flag it rather than writing a vague entry.
+Do not use the glossary for generic programming terms or implementation prescriptions. Flag fuzzy terms rather than recording vague definitions.
 
-### ADRs — architectural decisions
+### ADRs
 
-When a significant architectural decision gets resolved (one that would be non-obvious to a future agent or developer), create an ADR under `docs/adr/`:
+Create or update an ADR only for a consequential, non-obvious, and difficult-to-reverse architectural trade-off. Number it sequentially under the repository's ADR location and include context, the decision, consequences, and rejected alternatives when useful. Do not create ADRs for ordinary implementation details.
 
-```markdown
-# NNNN — Decision Title
+## Completion
 
-**Date:** YYYY-MM-DD
-**Status:** Accepted
+Summarize:
 
-## Context
-
-What situation forced this decision.
-
-## Decision
-
-What we decided.
-
-## Consequences
-
-What gets easier, what gets harder, what constraints this creates.
-```
-
-Number sequentially. Only record decisions that are *genuinely architectural* — not implementation details. If the user explicitly rejects a direction, record it under "Consequences" or as a separate "Rejected alternatives" section so future sessions don't re-litigate it.
-
-### After the session
-
-In `--docs` mode, summarize at the end:
-- New terms added to `CONTEXT.md`
-- ADRs created or updated
-- Any terminology that remains unresolved (flagged for a future session)
+- Confirmed decisions and their evidence or confirmation source.
+- Decision record, glossary, and ADR paths created or updated, unless interview-only mode was selected.
+- Assumptions, unresolved questions, and the specific decision needed to proceed.

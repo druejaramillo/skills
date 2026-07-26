@@ -1,0 +1,40 @@
+{
+  "skill_name": "to-issues",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Break this approved PRD into GitHub implementation tickets.",
+      "expected_output": "Creates an approved, acyclic set of independently verifiable vertical-slice tickets with observable outcomes, acceptance criteria, blockers, and source references.",
+      "assertions": [
+        "Triggers for plan-to-ticket conversion",
+        "Uses vertical slices rather than horizontal layer tickets",
+        "Requires user approval of granularity and dependencies",
+        "Uses neutral needs-triage status when the tracker supports states",
+        "Does not classify tickets by ownership"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write a PRD for the billing export feature.",
+      "expected_output": "Does not create tickets; it identifies PRD synthesis as the appropriate task.",
+      "assertions": [
+        "Does not trigger for PRD authoring",
+        "Does not publish tracker tickets from an underspecified request"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Migrate every client from API v1 to v2 and create the tickets now.",
+      "expected_output": "Proposes expand, migrate, and contract tickets with ordered dependencies, verifies each remains observable, and waits for approval before publishing.",
+      "assertions": [
+        "Uses expand-migrate-contract for a broad compatibility change",
+        "Links expand before migrate before contract",
+        "Checks the dependency graph is acyclic",
+        "Does not publish before the user approves the breakdown"
+      ],
+      "files": []
+    }
+  ]
+}

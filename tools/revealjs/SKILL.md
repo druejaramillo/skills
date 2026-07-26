@@ -259,7 +259,7 @@ Why inline styles for grids? Each slide's layout needs vary - column ratios, gap
 Run the overflow checker to ensure no slides have content that extends beyond boundaries:
 
 ```bash
-node scripts/check-overflow.js presentation.html
+node <path-to-skill>/scripts/check-overflow.js presentation.html
 ```
 
 The script checks each slide for:

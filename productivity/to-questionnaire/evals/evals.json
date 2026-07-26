@@ -1,0 +1,42 @@
+{
+  "skill_name": "to-questionnaire",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to ask our support lead what is breaking during onboarding so I can decide which activation flow to prioritize. She owns the ticket history. Known facts: users abandon after account creation, but we do not know why. Ask for the questionnaire in /tmp/onboarding-questions.md, with replies due Friday.",
+      "expected_output": "Interviews or uses the sender's facts to draft a neutral questionnaire for the support lead. Every question is atomic, answerable from ticket history, and explains how it informs activation-flow prioritization. It includes answer stubs and the Friday response guidance. It saves only to /tmp/onboarding-questions.md after wording and path approval, and never sends it.",
+      "assertions": [
+        "Treats the user as the sender and the support lead as the recipient",
+        "Maps each question to the prioritization decision",
+        "Uses atomic answerable questions with answer stubs",
+        "Includes reply timing from the sender",
+        "Uses only the approved path when saving",
+        "Does not send or post the questionnaire"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write questions for someone about the launch and save them somewhere. Fill in what they probably think, then email the result to them.",
+      "expected_output": "Stops to ask for the recipient, the sender's decisions, recipient-held context, and an exact approved file path. It does not invent answers, create a file at an inferred location, or email anything.",
+      "assertions": [
+        "Requests a named recipient and decision need",
+        "Requests an exact approved save path",
+        "Does not invent recipient answers",
+        "Does not email or otherwise send the questionnaire"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Turn the decisions we made about onboarding into a PRD for the engineering team.",
+      "expected_output": "Does not create a recipient questionnaire. The needed information is already in the conversation, so it identifies specification synthesis as the fitting work rather than asking a third party questions.",
+      "assertions": [
+        "Does not invent a questionnaire recipient",
+        "Does not create or send a questionnaire",
+        "Distinguishes known-context specification work from asynchronous discovery"
+      ],
+      "files": []
+    }
+  ]
+}
