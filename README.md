@@ -1,6 +1,6 @@
 # Skills Repository
 
-A comprehensive collection of expert skills for AI coding assistants, organized into six categories: **Concept Design**, **UI/Frontend**, **Marketing**, **Tools**, **Project**, and **Productivity**.
+A comprehensive collection of expert skills for AI coding assistants, organized into five categories: **Concept Design**, **Marketing**, **Tools**, **Project**, and **Productivity**.
 
 ## What are Skills?
 
@@ -14,7 +14,6 @@ Skills are typically loaded automatically by AI coding assistants when they dete
 
 **Example invocations:**
 - "Design a concept for user authentication" → triggers `concept-design`
-- "Audit this page for accessibility issues" → triggers `audit`
 - "Write copy for my landing page" → triggers `copywriting`
 - "Help me implement htmx patterns" → triggers `htmx`
 
@@ -46,87 +45,6 @@ Translate concept specs into working code. Maps concepts to packages/modules, im
 - Concepts are independent and don't call each other
 - State and actions are explicit and minimal
 - Synchronizations compose concepts at the app layer
-
----
-
-## UI/Frontend (`ui/`)
-
-Professional frontend development with emphasis on design quality, accessibility, and user experience.
-
-### Design & Creation Skills
-
-#### `ui/frontend-design/`
-Create distinctive, production-grade interfaces that avoid generic "AI slop" aesthetics. Provides comprehensive guidance on typography, color, layout, motion, and interaction design.
-
-**Use for:** Building web components, pages, applications with exceptional design quality
-
-**Key principles:**
-- Bold aesthetic direction (brutalist, refined, playful, etc.)
-- Avoid AI tells (cyan-on-dark, gradient text, glassmorphism, nested cards)
-- Typography: distinctive fonts, modular scales, proper hierarchy
-- Color: OKLCH, tinted neutrals, avoid pure black/white
-- Motion: purposeful, natural easing (no bounce/elastic)
-
-#### `ui/web-ui/`
-Quick audit rules for web interfaces. Checks accessibility, focus states, forms, animation, typography, performance, and common anti-patterns.
-
-**Use for:** Fast interface reviews, checklist-style feedback
-
-### Quality & Improvement Skills
-
-#### `ui/audit/`
-Comprehensive quality audit across accessibility, performance, theming, responsive design, and anti-patterns. Generates detailed reports with severity ratings and recommendations.
-
-**Use for:** Full interface audits, identifying systematic issues, prioritizing improvements
-
-#### `ui/polish/`
-Final quality pass before shipping. Fixes alignment, spacing, consistency, interaction states, typography, and detail issues.
-
-**Use for:** Pre-launch polish, catching small details, ensuring production quality
-
-#### `ui/optimize/`
-Improve performance: loading speed, rendering, animations, images, bundle size. Covers Core Web Vitals, React optimization, network efficiency.
-
-**Use for:** Fixing performance issues, improving load times, achieving 60fps animations
-
-#### `ui/harden/`
-Strengthen against edge cases: text overflow, internationalization, error handling, large datasets, empty states, RTL support.
-
-**Use for:** Production readiness, handling real-world data, i18n support
-
-#### `ui/normalize/`
-Align interfaces with design systems and maintain consistency across components.
-
-**Use for:** Design system compliance, visual consistency
-
-### Specialized Enhancement Skills
-
-#### `ui/animate/`
-Add purposeful animations and micro-interactions. Covers entrance animations, state transitions, feedback, navigation, and delight moments.
-
-**Use for:** Enhancing interfaces with motion, improving feedback, creating smooth transitions
-
-#### `ui/delight/`
-Add moments of joy and personality. Covers micro-interactions, playful copy, illustrations, satisfying interactions, and easter eggs.
-
-**Use for:** Making interfaces memorable, adding brand personality, creating emotional connections
-
-#### `ui/adapt/`
-Adapt designs across different screen sizes, devices, platforms, or contexts. Handles mobile/tablet/desktop, touch vs mouse, print, email.
-
-**Use for:** Responsive design, cross-platform adaptation, mobile optimization
-
-### Utility Skills
-
-- `ui/bolder/` - Make designs more confident and prominent
-- `ui/quieter/` - Reduce visual noise and create calm
-- `ui/clarify/` - Improve clarity and reduce confusion
-- `ui/colorize/` - Enhance and refine color usage
-- `ui/critique/` - Provide design critique and feedback
-- `ui/distill/` - Simplify and focus interfaces
-- `ui/extract/` - Extract design patterns and components
-- `ui/onboard/` - Improve onboarding experiences
-- `ui/teach-impeccable/` - (See skill for details)
 
 ---
 
@@ -219,7 +137,7 @@ Apply psychological principles to marketing and persuasion.
 Technical integrations and specialized libraries.
 
 ### `tools/htmx/`
-Expert guidance for building hypermedia-driven web applications with htmx. Covers attributes, patterns, server-side integration, and common UI patterns.
+Expert guidance for building hypermedia-driven web applications with htmx. Covers attributes, patterns, server-side integration, and common interface patterns.
 
 **Use for:** Building htmx applications, HTML-over-the-wire, AJAX without JavaScript frameworks
 
@@ -338,7 +256,7 @@ Standalone engineering, planning, and maintenance practices. They can be combine
 - `project/tdd/` — implement behavior through agreed public seams, one observable red-to-green slice at a time.
 - `project/diagnose/` — prove a feedback loop, reproduce and minimize a problem, test causal hypotheses, then record the diagnosis.
 - `project/code-review/` — review a fixed-point diff through separate Standards and Spec lenses.
-- `project/prototype/` — answer one UI, state, or interface question with a disposable runnable artifact and recorded verdict.
+- `project/prototype/` — answer one state or interface question with a disposable runnable artifact and recorded verdict.
 - `project/merge-conflict-resolution/` — trace both sides' intent before resolving a merge or rebase conflict.
 - `project/zoom-out/` — produce an evidence-backed read-only map of an unfamiliar subsystem.
 - `project/caveman/` — use a compact response mode when the user explicitly asks for it.
@@ -355,13 +273,6 @@ skills/
 │   ├── concept-design/
 │   ├── concept-audit/
 │   └── concept-implement/
-├── ui/                # Frontend & interface design
-│   ├── frontend-design/
-│   ├── audit/
-│   ├── polish/
-│   ├── optimize/
-│   ├── animate/
-│   └── ... (19 UI skills)
 ├── marketing/         # Marketing, copy, SEO, creative
 │   ├── copywriting/
 │   ├── creative-director/
@@ -415,7 +326,6 @@ Each skill contains:
 Just describe what you want to do. The AI will automatically load relevant skills:
 
 - "Help me design the Label concept" → loads `concept-design`
-- "Make this page load faster" → loads `optimize`
 - "Write landing page copy for my SaaS" → loads `copywriting`
 - "Add htmx infinite scroll" → loads `htmx`
 - "This bug is hard to reproduce" → loads `diagnose`
@@ -427,7 +337,6 @@ Just describe what you want to do. The AI will automatically load relevant skill
 Reference skills by name or domain:
 
 - "Use the concept-audit skill to review my codebase"
-- "Apply the frontend-design skill to create this component"
 - "I need ai-seo help for my blog posts"
 - "/grill" → resolves decisions and records confirmed outcomes
 - "/grill --interview-only" → resolves decisions without changing durable documentation
@@ -436,17 +345,7 @@ Reference skills by name or domain:
 
 ### Optional Compositions
 
-Many skills work together:
-
-1. `frontend-design` → create distinctive interface
-2. `audit` → identify issues
-3. `optimize` → improve performance
-4. `harden` → handle edge cases
-5. `animate` → add motion
-6. `delight` → add personality
-7. `polish` → final quality pass
-
-Or, for a concept implementation:
+For a concept implementation:
 
 1. `concept-design` → design the concept
 2. `concept-implement` → build the code
@@ -471,15 +370,6 @@ Or, for an uncertain engineering initiative:
 3. Use SSF notation for state, bracket notation for actions
 4. Write operational principles as short scenarios
 5. Check against the seven criteria (user-facing, semantic, independent, behavioral, purposive, end-to-end, familiar)
-
-### For UI/Frontend
-
-1. Start with `frontend-design` for new work
-2. Check `web-ui` rules or run `audit` for existing work
-3. Use `adapt` for responsive/cross-platform needs
-4. Apply `optimize` for performance issues
-5. Use `harden` before production
-6. Finish with `polish` for final quality
 
 ### For Marketing
 
@@ -524,15 +414,6 @@ Or, for an uncertain engineering initiative:
 - New features → `concept-design`
 - Code review → `concept-audit`
 - Implementation → `concept-implement`
-
-**Building interfaces:**
-- New UI → `frontend-design`
-- Quality check → `audit` or `web-ui`
-- Performance → `optimize`
-- Edge cases → `harden`
-- Motion → `animate`
-- Personality → `delight`
-- Final pass → `polish`
 
 **Writing marketing content:**
 - Page copy → `copywriting`
