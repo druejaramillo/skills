@@ -1,6 +1,7 @@
-______________________________________________________________________
-
-## name: htmx description: "Expert guidance for building web applications with htmx — the library that gives HTML superpowers by extending it with attributes for AJAX, CSS transitions, WebSockets, and Server-Sent Events. Use this skill whenever the user is working with htmx attributes (hx-get, hx-post, hx-swap, hx-trigger, hx-target, etc.), building hypermedia-driven applications, writing server endpoints that return HTML fragments, implementing patterns like click-to-edit, infinite scroll, active search, lazy loading, inline validation, or any UI pattern that uses HTML-over-the-wire instead of JSON APIs. Also use this skill when the user mentions htmx by name, asks about AJAX without JavaScript frameworks, wants to add interactivity to server-rendered HTML, or is working with any hx-\* attributes. Trigger even for partial mentions like 'how do I make this form submit without page reload' or 'load content dynamically' in projects that use htmx."
+---
+name: htmx
+description: "Expert guidance for building web applications with htmx — the library that gives HTML superpowers by extending it with attributes for AJAX, CSS transitions, WebSockets, and Server-Sent Events. Use this skill whenever the user is working with htmx attributes (hx-get, hx-post, hx-swap, hx-trigger, hx-target, etc.), building hypermedia-driven applications, writing server endpoints that return HTML fragments, implementing patterns like click-to-edit, infinite scroll, active search, lazy loading, inline validation, or any UI pattern that uses HTML-over-the-wire instead of JSON APIs. Also use this skill when the user mentions htmx by name, asks about AJAX without JavaScript frameworks, wants to add interactivity to server-rendered HTML, or is working with any hx-\* attributes. Trigger even for partial mentions like 'how do I make this form submit without page reload' or 'load content dynamically' in projects that use htmx."
+---
 
 # Documentation
 
