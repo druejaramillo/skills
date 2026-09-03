@@ -1,6 +1,7 @@
-______________________________________________________________________
-
-## name: templ description: templ is a templating language for Go that compiles to Go code. This skill should be used when writing, reviewing, or refactoring templ code to ensure optimal build performance, minimal CSS output, and correct usage of v4 features. Triggers on tasks involving templ configuration, @theme directive, utility classes, responsive design, dark mode, container queries, or CSS generation optimization.
+---
+name: templ
+description: templ is a templating language for Go that compiles to Go code. This skill should be used when writing, reviewing, or refactoring templ code to ensure optimal build performance, minimal CSS output, and correct usage of v4 features. Triggers on tasks involving templ configuration, @theme directive, utility classes, responsive design, dark mode, container queries, or CSS generation optimization.
+---
 
 # Components
 
